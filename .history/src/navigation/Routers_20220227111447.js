@@ -27,7 +27,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/MaterialIcons';
 
 
-import Carousel from 'react-native-snap-carousel';
+
 import {COLORS} from '../../../css/Allcolors';
 
 import LinearGradient from 'react-native-linear-gradient';
