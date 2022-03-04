@@ -46,13 +46,13 @@ const Dataproducts = [
     key: 1,
     title: 'All Your favorites foods',
     price: '$19.99',
-    image: require('../../image/img11.jpeg'),
+    image: require('../../image/foodskip.png'),
   },
   {
     key: 2,
     title: 'Get delivery at your \n doorstep',
     price: '$19.99',
-    image: require('../../image/img22.jpeg'),
+    image: require('../../image/foodskip.png'),
   },
   {
     key: 3,
@@ -73,23 +73,23 @@ const Homekupascreen = () => {
     return (
       <TouchableOpacity
         style={{
-          marginHorizontal: 5,
+          marginHorizontal: 10,
           borderRadius: 10,
           backgroundColor: COLORS.white,
         }}>
-        <View style={{ height: hp('20%'),marginBottom:5}}>
+        <View style={{width: wp('45%'), height: hp('20%'),marginBottom:5}}>
           <Image
             resizeMode="contain"
             style={{width: wp('45%'), height: hp('20%')}}
             source={item.image}
           />
         </View>
-        <View style={{ marginBottom: 5}}>
+        <View style={{marginHorizontal: 10, marginBottom: 10}}>
           <Text numberOfLines={1} style={{}}>
             {item.title}
           </Text>
         </View>
-        <View style={{ marginBottom: 10}}>
+        <View style={{marginHorizontal: 10, marginBottom: 10}}>
           <Text style={{fontWeight:'bold'}}>{item.price}</Text>
         </View>
       </TouchableOpacity>

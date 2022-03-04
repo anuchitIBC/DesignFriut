@@ -89,13 +89,13 @@ const RouterAppKup = ({}) => {
       <Tabs.Navigator
         //  showLabel={true}
         initialRouteName="Homescreen"
-        sceneContainerStyle={{backgroundColor:COLORS.white}}
+        sceneContainerStyle={{}}
         screenOptions={{
           tabBarLabelStyle: {fontSize: fontSizes.labelSize},
           headerShown: false,
           showLabel: true,
 
-          tabBarStyle: {backgroundColor:COLORS.white},
+          tabBarStyle: {},
         }}
         backBehavior="none">
         <Tabs.Screen

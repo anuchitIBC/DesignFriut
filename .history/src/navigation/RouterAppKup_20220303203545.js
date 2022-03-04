@@ -89,13 +89,13 @@ const RouterAppKup = ({}) => {
       <Tabs.Navigator
         //  showLabel={true}
         initialRouteName="Homescreen"
-        sceneContainerStyle={{backgroundColor:COLORS.white}}
+        sceneContainerStyle={{}}
         screenOptions={{
           tabBarLabelStyle: {fontSize: fontSizes.labelSize},
           headerShown: false,
           showLabel: true,
 
-          tabBarStyle: {backgroundColor:COLORS.white},
+          tabBarStyle: {},
         }}
         backBehavior="none">
         <Tabs.Screen
@@ -109,7 +109,6 @@ const RouterAppKup = ({}) => {
                     color: focused
                       ? COLORS.bgGrreen
                       : COLORS.placeholderTextColor,
-                      fontSize:fontSizes.labelSize
                   }}>
                   {'Home'}
                 </Text>
@@ -136,7 +135,6 @@ const RouterAppKup = ({}) => {
                     color: focused
                       ? COLORS.bgGrreen
                       : COLORS.placeholderTextColor,
-                      fontSize:fontSizes.labelSize
                   }}>
                   {'Menu'}
                 </Text>
@@ -145,7 +143,7 @@ const RouterAppKup = ({}) => {
             tabBarIcon: () => (
               <View>
                 <Image
-                  style={{resizeMode: 'contain', width: 20, height: 20}}
+                  style={{resizeMode: 'contain', width: 30, height: 30}}
                   source={require('../../src/pages/image/history.png')}
                 />
               </View>
@@ -163,7 +161,6 @@ const RouterAppKup = ({}) => {
                     color: focused
                       ? COLORS.bgGrreen
                       : COLORS.placeholderTextColor,
-                      fontSize:fontSizes.labelSize
                   }}>
                   {'Cart'}
                 </Text>
@@ -172,7 +169,7 @@ const RouterAppKup = ({}) => {
             tabBarIcon: () => (
               <View>
                 <Image
-                  style={{resizeMode: 'contain', width: 20, height: 20}}
+                  style={{resizeMode: 'contain', width: 30, height: 30}}
                   source={require('../../src/pages/image/history.png')}
                 />
               </View>
@@ -191,7 +188,6 @@ const RouterAppKup = ({}) => {
                     color: focused
                       ? COLORS.bgGrreen
                       : COLORS.placeholderTextColor,
-                     fontSize:fontSizes.labelSize
                   }}>
                   {'Profile'}
                 </Text>
@@ -200,7 +196,7 @@ const RouterAppKup = ({}) => {
             tabBarIcon: () => (
               <View>
                 <Image
-                  style={{resizeMode: 'contain', width: 20, height: 20}}
+                  style={{resizeMode: 'contain', width: 30, height: 30}}
                   source={require('../../src/pages/image/history.png')}
                 />
               </View>

@@ -80,7 +80,7 @@ const Homekupascreen = () => {
         <View style={{ height: hp('20%'),marginBottom:5}}>
           <Image
             resizeMode="contain"
-            style={{width: wp('45%'), height: hp('20%')}}
+            style={{width: '40%', height: hp('20%')}}
             source={item.image}
           />
         </View>

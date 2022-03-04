@@ -84,12 +84,12 @@ const Homekupascreen = () => {
             source={item.image}
           />
         </View>
-        <View style={{ marginBottom: 5}}>
+        <View style={{marginHorizontal: 10, marginBottom: 5}}>
           <Text numberOfLines={1} style={{}}>
             {item.title}
           </Text>
         </View>
-        <View style={{ marginBottom: 10}}>
+        <View style={{marginHorizontal: 10, marginBottom: 10}}>
           <Text style={{fontWeight:'bold'}}>{item.price}</Text>
         </View>
       </TouchableOpacity>

@@ -77,7 +77,7 @@ const Homekupascreen = () => {
           borderRadius: 10,
           backgroundColor: COLORS.white,
         }}>
-        <View style={{ height: hp('20%'),marginBottom:5}}>
+        <View style={{ width: wp('60%'),height: hp('20%'),marginBottom:5}}>
           <Image
             resizeMode="contain"
             style={{width: wp('45%'), height: hp('20%')}}

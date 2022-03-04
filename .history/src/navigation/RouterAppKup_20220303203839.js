@@ -95,7 +95,7 @@ const RouterAppKup = ({}) => {
           headerShown: false,
           showLabel: true,
 
-          tabBarStyle: {backgroundColor:COLORS.white},
+          tabBarStyle: {marginTop:10,backgroundColor:COLORS.white},
         }}
         backBehavior="none">
         <Tabs.Screen
