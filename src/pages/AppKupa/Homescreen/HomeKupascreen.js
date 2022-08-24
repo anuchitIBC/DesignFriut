@@ -23,6 +23,7 @@ import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import react from 'react';
 import Header from './../Componetheader/Header';
 
+
 import Carousel from 'react-native-snap-carousel';
 import {COLORS} from '../../../css/Allcolors';
 import {
@@ -30,6 +31,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {fontSizes} from '../../../css/Allsizefont';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 // css sizescreen
 const windowns = Dimensions.get('window');
@@ -69,6 +71,16 @@ const Dataproducts = [
 ];
 
 const Homekupascreen = () => {
+
+  const [spinner ,setspinner] = useState(true)
+
+  useEffect(() => {
+    return () => {
+     
+        setspinner(!spinner)
+     
+    };
+  }, [])
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
@@ -100,7 +112,17 @@ const Homekupascreen = () => {
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
       <Header />
       <ScrollView style={{}}>
-        <View
+
+
+        <Spinner
+         size="small"
+          visible={spinner}
+          textContent={''}
+          textStyle={styles.spinnerTextStyle}
+        />
+
+  
+<View
           style={{
             marginTop: 10,
             borderWidth: 1,
@@ -205,6 +227,7 @@ const Homekupascreen = () => {
             keyExtractor={item => item.id}
           />
         </View>
+
       </ScrollView>
     </View>
   );
@@ -212,6 +235,9 @@ const Homekupascreen = () => {
 
 export default Homekupascreen;
 const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: 'red'
+  },
   carouselContainer: {
     marginTop: 20,
   },
@@ -231,5 +257,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  title: {
+    fontSize: 38,
+    backgroundColor: 'transparent'
   },
 });
