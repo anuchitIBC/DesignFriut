@@ -1,841 +1,1604 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
-  ImageBackground,
-  Dimensions,
   Image,
-  ScrollView,
   FlatList,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
   Linking,
+  ActivityIndicator,
   Platform,
+  Keyboard,
+  KeyboardAvoidingView,
+  AsyncStorage,
+  StyleSheet,
+  Share,
   Alert,
-  Button,
   Animated,
+  RefreshControl,
 } from "react-native";
-import Styles from "./Styles";
-import I18n from "../../utils/I18n";
-import { ListItem, Overlay } from "react-native-elements";
-import { getActivity, CheckRegisterActivity } from "../../actions/data.actions";
 import { connect } from "react-redux";
-import SegmentedControlTab from "react-native-segmented-control-tab";
-import ScrollableTabView, {
-  ScrollableTabBar,
-} from "../../lib_edit/react-native-scrollable-tab-view";
-import InAppBrowser from "react-native-inappbrowser-reborn";
+import Styles from "../../Develop/Styles";
+import Headers from "../../../components/Headers";
+import Styless from "./Styles";
 
-import { getDeepLink } from "../../config/utilities";
-import { getDeepLinkelearn } from "../../config/utilities";
-
-import Icon from "react-native-vector-icons/FontAwesome";
-import Icon3 from "react-native-vector-icons/MaterialIcons";
+import { CheckBox, Overlay, ListItem, Header } from "react-native-elements";
+import {
+  Getactivefrom,
+  getdatacontry,
+  updateProfileNiti,
+  updateProfileNatural,
+  getDataBusiness,
+  GetParticipantInfoincountry,
+} from "../../../actions/data.actions";
+import I18n from "../../../utils/I18n";
 import LinearGradient from "react-native-linear-gradient";
-import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
-import { getDeepLinkAct } from "../../config/utilities";
-import { ViewScale } from "../../config/ViewScale";
+import { COLORbg, COLORrgb, COLORSFont } from "../../../css/AllColor";
+import ParallaxScrollView from "../../../lib_edit/react-native-parallax-scroll-view";
+import { ViewScale } from "../../../config/ViewScale";
+import { FONTFAMILY_ } from "../../../css/AllFontfamily";
+import Icon1 from "react-native-vector-icons/MaterialIcons";
+import Icon0 from "react-native-vector-icons/Ionicons";
+import {
+  Star_Date,
+  End_Datet,
+  End_DatetFull,
+} from "../../../config/Allfunction";
+import {
+  Arrowright,
+  ICONLocation,
+  Icononline,
+  Icononlinered,
+  Penciledit,
+  Iconclose,
+  IconchooseMonth,
+} from "../../../icon/Customs";
 
-import ProgressBarAnimated from "react-native-progress-bar-animated";
+import {
+  idcard,
+  Phonenumber,
+  showTitlename,
+} from "../../../config/Allfunction";
+import RBSheet from "react-native-raw-bottom-sheet";
+import DataProvices from "../../../Data/DataProvices";
+import DataDistricts from "../../../Data/DataDistricts";
+import Datasubdistricts from "../../../Data/Datasubdistricts";
+import DataCountry from "../../../Data/DataCountry";
+import DataTitlename from "../../../Data/DataTitlename";
+import { Root, Popup, Toast } from "../../../lib_edit/popup-ui";
+import { ref } from "yup";
+import { TextCSS } from "../../../css/Allcss";
 
-import { getDeepLinkAutoMem } from "../../config/utilities";
-import { COLORbg, COLORSFont } from "../../css/AllColor";
-import { FONTFAMILY_ } from "../../css/AllFontfamily";
-import { Editregister, IconSurvey, Penciledit } from "../../icon/Customs";
-
-import SmeActivity from "./SmeActivity";
-import { formatdate, _getFormsSurvey } from "../../config/Allfunction";
 const height = Dimensions.get("window").height;
 const { width } = Dimensions.get("window");
-class Activities extends React.Component {
+// const AVATAR_SIZE = 120;
+// const ROW_HEIGHT = 60;
+// const PARALLAX_HEADER_HEIGHT = 30;
+
+class TradeActivityFrom1Profiles extends React.Component {
   constructor(props) {
+    const getDate = new Date();
     super(props);
-
     this.state = {
-      heightTab: 0,
-      Page: 3,
-      Selec: [],
-      Page3: 3,
-      Page4: 3,
-      Page5: 3,
-      Page6: 3,
-      ActivityAccept: [],
-      SelecIndexYear: 0,
-      year1: null,
-      year2: null,
-      year3: null,
-      year4: null,
-      ActivityYear: [],
-      ActivityYearNew: [],
-      ActivityYear2022length: [],
-      ActivityYear2021length: [],
-      ActivityYear2020length: [],
-      ActivityYear2019length: [],
-      Activityregisterlength: [],
-      Activityprocesslength: [],
-      idAct: "",
-      ckhide: false,
-      checkHide: true,
-      popupEditregister: false,
-      IDcard:
-        this.props.getUser.userDetails.res_result.member != undefined
-          ? this.props.getUser.userDetails.res_result.naturalId
-          : this.props.getUser.userDetails.res_result.naturalId,
+      refreshing: false,
+      parallaxHeight: 220,
+      parallaxstickyHeight: 80,
+      parallaxHeightandroid: 250,
+      Select: [],
+      hidetitle: false,
+      CK_scrollEnabled: true,
+      //////////////////////data profiles///////
+      FormDatatype1contact: [],
+      FormDataProfiles: [],
+      FormDatatype1addnress: [],
 
-      active: 0,
-      xTabOne: 0,
-      xTabTwo: 0,
-      translateX: new Animated.Value(0),
-      translateXTabOne: new Animated.Value(0),
-      translateXTabTwo: new Animated.Value(width),
-      translateY: -1000,
-      DatatoHistory: [],
+      SendDataFromProfiles: [],
+      // Dataprovice: [],
+      Datadistricts: [],
+      Datasubdistrictss: [],
+      ShowDatabusiness: [],
+      // NewDatadistricts:[],
+      clarnames: false,
+      clarnamesnameSubDistricts: false,
+      togleprovincecode: null,
+      togleDistrictscode: null,
+      togleSubDistrictscode: null,
+      togleCountryId: null,
+      togleTitleNameId: null,
+      nameSubDistricts: "",
+      nameprovinces: "",
+      nameDistricts: "",
+      nameCountry: "",
+      nameTitlename: "",
+      selectcheckdistricts: false,
+      ////////// open check ////////
+      openDistricts: true,
+      openSubDistricts: true,
+      dataProfiles: [],
     };
   }
 
-  ///////////////////////// funtion Edit ////////////////////
+  //////////////// zone function /////////////////////
+  componentDidUpdate() {
+    console.log("{}{}{}{}");
 
-  // EditregisterHHHH() {
-  //   this.setState({popupEditregister: true});
-  //   // this.setState({Detailact:true})
-  //   // alert('ooooo')
-  // }
-
-  ///////////////////////// funtion register ////////////////////
+    // this.ref.
+  }
 
   componentDidMount() {
-    const { navigation, DataRegister } = this.props;
-
-    if (DataRegister.res_code === "00") {
-      // console.log(
-      //   'result.not_active' + JSON.stringify(DataRegister.result.not_active),
-      // );
-      this.setState({
-        DatatoHistory: DataRegister,
-        ActivityAccept: DataRegister.result.active,
-        ActivityYear: DataRegister.result.not_active,
-      });
-
-      //นับจำนวน รอยื่นใบสมัคร
-      DataRegister.result.active.map((data, index) => {
-        if (data.participate_status_code === "0") {
-          this.state.Activityregisterlength.push(data);
-        }
-      });
-
-      // นับจำจวนอยู่ระหว่างการสมัครกิจกกรม
-
-      DataRegister.result.active.map((data, index) => {
-        if (
-          data.participate_status_code === "1" ||
-          data.participate_status_code === "2"
-        ) {
-          this.state.Activityprocesslength.push(data);
-        }
-      });
-
-      DataRegister.result.not_active[2022].map((data, index) => {
-        if (data.participate_status_code === "3") {
-          this.state.ActivityYear2022length.push(data);
-        }
-      });
-
-      DataRegister.result.not_active[2021].map((data, index) => {
-        if (data.participate_status_code === "3") {
-          this.state.ActivityYear2021length.push(data);
-        }
-      });
-
-      DataRegister.result.not_active[2020].map((data, index) => {
-        if (data.participate_status_code === "3") {
-          this.state.ActivityYear2020length.push(data);
-        }
-      });
-
-      DataRegister.result.not_active[2019].map((data, index) => {
-        if (data.participate_status_code === "3") {
-          this.state.ActivityYear2019length.push(data);
-        }
-      });
-
-      const Yearall = Object.keys(DataRegister.result.not_active);
-
-      const Year1 = parseInt(Yearall[0]);
-      const Year2 = parseInt(Yearall[1]);
-      const Year3 = parseInt(Yearall[2]);
-      const Year4 = parseInt(Yearall[3]);
-
-      console.log("Year1", Year1);
-      this.setState({ year1: Year1 });
-      this.setState({ year2: Year2 });
-      this.setState({ year3: Year3 });
-      this.setState({ year4: Year4 });
+    const { FORMTYPE } = this.props.route.params;
+    //  console.log(PID,TYPE ,ACTIVITICODE,IDCARD,TOKEN)
+    this.getFromProfiles();
+    this._getDataBusiness();
+    if (FORMTYPE === 2) {
+      this._GetParticipantInfoincountry();
     }
-    // this._getActivity();
   }
-  // _getActivity = async (value) => {
-  //   try {
-  //     // const payload = this.props.authData.token;
-  //     // const respones = await this.props.dispatch(
-  //     //   getActivity({
-  //     //     token: payload,
-  //     //   })
-  //     // );
-
-  //   } catch (error) {}
-  // };
-  DataAct2 = (values) => {
-    // alert(values)
+  // only form type 2
+  _GetParticipantInfoincountry = async (value) => {
+    // alert('fuckkkk')
     try {
-      const dataregister0 = [];
-      const dataprocess1 = [];
+      const {
+        PID,
+        TYPE,
+        ACTIVITICODE,
+        IDCARD,
+        TOKEN,
+      } = this.props.route.params;
 
-      const ActivityAccept2 = this.state.ActivityAccept;
+      const payload = {
+        result: {
+          pid: PID,
+          formtype: IDCARD,
+          activity_code: ACTIVITICODE,
+        },
+        token: TOKEN,
+      };
+      const response = await this.props.dispatch(
+        GetParticipantInfoincountry(payload)
+      );
+      console.log(response);
+      if (response.res_text === "success") {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      this.state.ActivityAccept.map((data, index) => {
-        if (data.participate_status_code === "0") {
-          dataregister0.push(data);
-        }
-      });
-      this.state.ActivityAccept.map((data, index) => {
-        if (data.participate_status_code !== "0") {
-          console.log("CCCFCFFCFCFFCC" + JSON.stringify(data, index));
-          dataprocess1.push(data);
-        }
-      });
+  getFromProfiles = async (value) => {
+    try {
+      const {
+        PID,
+        TYPE,
+        ACTIVITICODE,
+        IDCARD,
+        TOKEN,
+      } = this.props.route.params;
 
-      var number = [];
+      const payload = {
+        result: {
+          pid: PID,
+          type: TYPE,
+          member_cid: IDCARD,
+          case: 1,
+          activity_code: ACTIVITICODE,
+        },
+        token: TOKEN,
+      };
+      // alert(JSON.stringify(payload))
+      const response = await this.props.dispatch(Getactivefrom(payload));
 
-      if (values == 1) {
-        if (dataregister0.length > this.state.Page) {
-          for (let index = 0; index < this.state.Page; index++) {
-            number.push(dataregister0[index]);
-          }
+      // console.log("responseMMMMMMMMMMMMM");
+      // console.log(JSON.stringify(response.result[1].Items));
 
-          return number;
+      if (response.res_code === "00") {
+        this.setState({
+          FormDataProfiles: response.result[0].Items,
+          FormDatatype1addnress: response.result[1].Items,
+          FormDatatype1contact: response.result[2].Items,
+          dataProfiles: response.result,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  UpdateFromProfiles = async (value) => {
+    try {
+      const {
+        FormDataProfiles,
+        FormDatatype1addnress,
+        FormDatatype1contact,
+        AddressTH,
+        AddressEn,
+        PostCode,
+        togleTitleNameId,
+        togleprovincecode,
+        togleDistrictscode,
+        togleSubDistrictscode,
+        togleCountryId,
+        Tel,
+        Fax,
+        email,
+        Website,
+        FirstNameTh,
+        FirstNameEn,
+        LastNameEn,
+        LastNameTh,
+      } = this.state;
+      const {
+        PID,
+        TYPE,
+        ACTIVITICODE,
+        IDCARD,
+        TOKEN,
+      } = this.props.route.params;
+
+      console.log(togleTitleNameId);
+
+      if (TYPE === 1 || TYPE === 2) {
+        // alert(JSON.stringify(this.state.FormDatatype1addnress[2].DataID))
+
+        const payload = {
+          results: {
+            activity_code: ACTIVITICODE,
+            pid: PID,
+            type: this.props.getUser.userDetails.res_result.type,
+            ditpMemberType: FormDataProfiles[0].Data,
+            ditpMeberNo: FormDataProfiles[1].Data,
+            taxNo: FormDataProfiles[2].Data,
+            companyNameTH: FormDataProfiles[3].Data,
+            companyNameEN: FormDataProfiles[4].Data,
+            addressTh:
+              AddressTH === undefined
+                ? FormDatatype1addnress[0].Data
+                : AddressTH,
+            addressEn:
+              AddressEn === undefined
+                ? FormDatatype1addnress[1].Data
+                : AddressEn,
+            provinceCode:
+              togleprovincecode === null
+                ? FormDatatype1addnress[2].ID.toString()
+                : togleprovincecode,
+
+            districtCode:
+              togleDistrictscode === null
+                ? FormDatatype1addnress[3].ID.toString()
+                : togleDistrictscode,
+
+            subDistrictCode:
+              togleSubDistrictscode === null
+                ? FormDatatype1addnress[4].ID.toString()
+                : togleSubDistrictscode,
+
+            postCode:
+              PostCode === undefined
+                ? FormDatatype1addnress[5].Data.toString()
+                : PostCode,
+
+            countryId:
+              togleCountryId === undefined
+                ? FormDatatype1addnress[6].ID.toString()
+                : togleCountryId,
+
+            cityId: "-",
+            tel: Tel === undefined ? FormDatatype1contact[0].Data : Tel,
+            fax: Fax === undefined ? FormDatatype1contact[1].Data : Fax,
+            email: email === undefined ? FormDatatype1contact[2].Data : email,
+            website:
+              Website === undefined ? FormDatatype1contact[3].Data : Website,
+            member_id: IDCARD,
+            updateByUser: IDCARD,
+          },
+          token: TOKEN,
+        };
+        const response = await this.props.dispatch(updateProfileNiti(payload));
+        console.log("จะแตกมั้ย");
+        console.log(response);
+
+        if (response.result.success === true) {
+          // setTimeout(() => {
+          //   Toast.show({
+          //     title: I18n.locale === "th" ? "แก้ไขเรียบร้อย" : "Sucess",
+          //     text: "",
+          //     color: COLORSFont.greenon,
+          //   });
+          // }, 200);
+
+          this.getFromProfiles();
         } else {
-          number.push(dataregister0);
-          return number[0];
+          // Toast.show({
+          //   title: I18n.locale === "th" ? "แก้ไขไม่สำเร็จ" : "Failed to edit",
+          //   text: "",
+          //   color: COLORSFont.red,
+          // });
         }
-      } else if (values === 2) {
-        if (dataprocess1.length > this.state.Page) {
-          for (let index = 0; index < this.state.Page; index++) {
-            number.push(dataprocess1[index]);
-          }
+      } else {
+        const payload = {
+          results: {
+            activity_code: ACTIVITICODE,
+            pid: PID,
+            type: TYPE,
+            member_cid: IDCARD,
+            titleNameId:
+              togleTitleNameId === null
+                ? FormDataProfiles[1].Data
+                : togleTitleNameId,
 
-          return number;
+            firstNameTh:
+              FirstNameTh === undefined
+                ? FormDataProfiles[2].Data
+                : FirstNameTh,
+            firstNameEn:
+              FirstNameEn === undefined
+                ? FormDataProfiles[3].Data
+                : FirstNameEn,
+            lastNameTh:
+              LastNameTh === undefined ? FormDataProfiles[4].Data : LastNameTh,
+            lastNameEn:
+              LastNameEn === undefined ? FormDataProfiles[5].Data : LastNameEn,
+            addressTh:
+              AddressTH === undefined
+                ? FormDatatype1addnress[0].Data
+                : AddressTH,
+            addressEn:
+              AddressEn === undefined
+                ? FormDatatype1addnress[1].Data
+                : AddressEn,
+            provinceCode:
+              togleprovincecode === null
+                ? FormDatatype1addnress[2].ID.toString()
+                : togleprovincecode,
+
+            districtCode:
+              togleDistrictscode === null
+                ? FormDatatype1addnress[3].ID.toString()
+                : togleDistrictscode,
+
+            subDistrictCode:
+              togleSubDistrictscode === null
+                ? FormDatatype1addnress[4].ID.toString()
+                : togleSubDistrictscode,
+
+            postCode:
+              PostCode === undefined
+                ? FormDatatype1addnress[5].Data.toString()
+                : PostCode,
+
+            countryId:
+              togleCountryId === undefined
+                ? FormDatatype1addnress[6].ID.toString()
+                : togleCountryId,
+
+            cityId: "-",
+            tel: Tel === undefined ? FormDatatype1contact[0].Data : Tel,
+            fax: Fax === undefined ? FormDatatype1contact[1].Data : Fax,
+            email: email === undefined ? FormDatatype1contact[2].Data : email,
+            website:
+              Website === undefined ? FormDatatype1contact[3].Data : Website,
+            member_id: IDCARD,
+            updateByUser: IDCARD,
+          },
+          token: TOKEN,
+        };
+
+        console.log("GGG" + JSON.stringify(payload));
+
+        const response = await this.props.dispatch(
+          updateProfileNatural(payload)
+        );
+        console.log("จะแตกมั้ยtype3");
+        console.log(response);
+
+        if (response.result.success === true) {
+          // Toast.show({
+          //   title: I18n.locale === "th" ? "แก้ไขเรียบร้อย" : "Sucess",
+          //   text: "",
+          //   color: COLORSFont.greenon,
+          // });
+          this.getFromProfiles();
         } else {
-          number.push(dataprocess1);
-          return number[0];
+          // Toast.show({
+          //   title: I18n.locale === "th" ? "แก้ไขไม่สำเร็จ" : "Failed to edit",
+          //   text: "",
+          //   color: COLORSFont.red,
+          // });
         }
       }
     } catch (error) {
-      return "ไม่แสดงข้อมูล";
+      console.log(error);
     }
   };
 
-  ///////////////////////// render compont////////////////////
-  ListDataAct1 = ({ item, index }) => {
-    var Props = this.props;
-    var state = this.state;
+  _getDataBusiness = async (value) => {
+    try {
+      const { authData } = this.props;
+      const token = authData.token;
+      const {
+        PID,
+        TYPE,
+        ACTIVITICODE,
+        IDCARD,
+        TOKEN,
+      } = this.props.route.params;
+      // console.log(PID, ACTIVITICODE);
 
-    return (
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#FFF",
+      const payload = {
+        result: {
+          pid: PID,
+        },
+        token: token,
+      };
+      const response = await this.props.dispatch(getDataBusiness(payload));
 
-          borderRadius: 8,
-          marginBottom: 10,
-        }}
-      >
-        <View style={{ flexDirection: "row", margin: 10 }}>
-          <View style={{}}>
-            <>
-              {item.activity_list_type === 43 ? (
-                <Image
-                  source={require("../../image/Elrean.png")}
-                  style={Styles.imgElearing}
-                />
-              ) : (
-                <>
-                  {item.formTypeActivity === 1 ? (
-                    <Image
-                      source={require("../../image/imgDevnew.png")}
-                      style={Styles.imgElearing}
-                    />
-                  ) : (
-                    <Image
-                      resizeMode={"cover"}
-                      source={{
-                        uri:
-                          item.activity_list_logo_thumb === ""
-                            ? "http://one.ditp.go.th/dist/img/icon/no-image.png"
-                            : item.activity_list_logo_thumb,
-                      }}
-                      style={
-                        item.activity_list_logo_thumb === ""
-                          ? Styles.ImgList1
-                          : Styles.ImgList
-                      }
-                    />
-                  )}
-                </>
-              )}
-            </>
-          </View>
-          <View style={{ marginHorizontal: 15, flex: 1 }}>
-            <Text
-              numberOfLines={2}
-              style={{
-                color: COLORSFont.textblack,
-                fontFamily: FONTFAMILY_.MitrRegular,
-              }}
-            >
-              {item.activity_name_th}
-            </Text>
+      if (response.res_code === "00") {
+        console.log(
+          "result===>??",
+          JSON.stringify(response.result[0].Items[1].Label)
+        );
 
-            <TouchableOpacity onPress={() => {}} style={Styles.BTregisteragain}>
-              <View style={{ marginHorizontal: 10, justifyContent: "center" }}>
-                <Editregister />
-              </View>
-              <View style={{ flex: 1, justifyContent: "center" }}>
-                <Text style={Styles.textregisteragain}>{"กรอกใบสมัครต่อ"}</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
+        this.setState({
+          ShowDatabusiness: response.result[0].Items[0].Data,
+          textbusinessLabel: response.result[0].Items[0].Label,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  ListDataprocess = ({ item, index }) => {
-    var Props = this.props;
-    var state = this.state;
-    const { navigation, DataRegister } = this.props;
+  //////////////// zone function /////////////////////
+
+  SelecOnOff = ({ index, item }) => {
+    let { Select } = this.state;
+    Select[index] = !Select[index];
+    this.setState({ Select: Select });
+    if (Select[index] === true) {
+      console.log("S");
+      this.setState({
+        parallaxHeight: 600,
+        parallaxHeightandroid: 580,
+        // parallaxstickyHeight:400,
+        hidetitle: true,
+        CK_scrollEnabled: false,
+      });
+    } else {
+      console.log("D");
+      this.setState({
+        parallaxHeight: 220,
+        parallaxHeightandroid: 250,
+        parallaxstickyHeight: 80,
+        hidetitle: false,
+        CK_scrollEnabled: true,
+      });
+    }
+  };
+
+  _onRefresh() {
+    this.setState({ refreshing: true });
+    // fetchData().then(() => {
+    //   this.setState({refreshing: false});
+    // });
+    setTimeout(() => {
+      this.setState({ refreshing: false });
+    }, 1000);
+    // wait(2000).then(() => {
+    //   this.setState({ refreshing: false });
+    // });
+  }
+
+  FilterDistrict = (index, item, cknull) => {
+    var res = DataDistricts.filter(
+      ({ ProvinceCode }) => ProvinceCode === index.toString()
+    );
+    // console.log("DataDistricts;;;===>", res);
+    this.setState({ Datadistricts: res });
+    this.setState({
+      togleDistrictscode: index,
+      nameDistricts:
+        cknull === 0
+          ? I18n.locale === "th"
+            ? item.Data
+            : item.provinceEN
+          : "",
+      openSubDistricts: false,
+      clarnamesnameSubDistricts: true,
+      nameSubDistricts: "",
+      // nameprovinces: "",
+      nameDistricts: "",
+    });
+    // this.modelDistricts.close();
+
+    // return res
+  };
+
+  FilterSubDistrict = (index, item, cknull) => {
+    var res = Datasubdistricts.filter(
+      ({ DistrictCode }) => DistrictCode === index.toString()
+    );
+    console.log("Datasub=========index===>", cknull);
+    // console.log("Datasub=========districts;;;===>", res);
+
+    this.setState({
+      togleDistrictscode: index,
+      nameSubDistricts:
+        cknull === 0
+          ? I18n.locale === "th"
+            ? item.Data
+            : item.provinceEN
+          : "",
+      clarnamesnameSubDistricts: true,
+      openSubDistricts: false,
+    });
+    this.setState({ Datasubdistrictss: res });
+    // this.modelDistricts.close();
+
+    // return res
+  };
+
+  Selecitprovince = ({ index, item }) => {
+    console.log("SelecitprovinceDDDDD" + index);
+
+    // this.getdata_district();
+    this.setState({
+      togleprovincecode: index,
+      nameprovinces: I18n.locale === "th" ? item.Data : item.provinceEN,
+      openDistricts: false,
+      clarnames: true,
+      clarnamesnameSubDistricts: true,
+      Datasubdistrictss: [],
+      // nameDistricts: "",
+    });
+    this.FilterDistrict(index, item, 1);
+    // this.modelProvince.close();
+  };
+
+  SelecitDistricts = ({ index, item }) => {
+    console.log("SelecitDistricts" + JSON.stringify(item));
+    this.FilterSubDistrict(index, item, 1);
+
+    this.setState({
+      togleDistrictscode: index,
+      nameDistricts: I18n.locale === "th" ? item.Data : item.provinceEN,
+      openSubDistricts: false,
+      clarnames: true,
+    });
+    // this.modelDistricts.close();
+  };
+
+  SelecitSubDistricts = ({ index, item }) => {
+    console.log("SelecitSubDistricts" + JSON.stringify(item));
+
+    this.setState({
+      togleSubDistrictscode: index,
+      nameSubDistricts: I18n.locale === "th" ? item.Data : item.provinceEN,
+      // openSubDistricts: false,
+    });
+    // this.modelSubDistricts.close();
+  };
+
+  SelectCountry = ({ index, item }) => {
+    this.setState({
+      togleCountryId: index,
+      nameCountry: I18n.locale === "th" ? item.Data : item.provinceEN,
+    });
+  };
+
+  SelectTitlename = ({ index, item }) => {
+    this.setState({
+      togleTitleNameId: index,
+      nameTitlename: I18n.locale === "th" ? item.Data : item.provinceEN,
+    });
+  };
+
+  //////////////// zone function /////////////////////
+
+  //////////////// zone components จังหวัด /////////////////////
+  rendercomponentprovince() {
+    return (
+      <View style={{ marginBottom: 50 }}>
+        <Text style={[Styless.texttitlemodel1]}>
+          {I18n.locale === "th" ? "เลือกจังหวัด" : "Select Province"}
+        </Text>
+        <View style={Styless.lineinmodel} />
+        <ScrollView style={{ marginBottom: 30, marginHorizontal: 20 }}>
+          {DataProvices.map((data, index) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  this.Selecitprovince({
+                    item:
+                      I18n.locale === "th"
+                        ? { Data: data.ProvinceNameTh }
+                        : { provinceEN: data.ProvinceNameEn },
+                    index: data.ProvinceCode,
+                  });
+                }}
+                style={{
+                  flexDirection: "row",
+                  borderBottomWidth: 1,
+                  borderColor: COLORSFont.borderGray1,
+                  margin: 5,
+                  padding: 8,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={
+                      this.state.togleprovincecode === data.ProvinceCode
+                        ? Styless.textck
+                        : Styless.textnock
+                    }
+                  >
+                    {I18n.locale === "th"
+                      ? data.ProvinceNameTh
+                      : data.ProvinceNameEn}
+                  </Text>
+                </View>
+                <View>
+                  {this.state.togleprovincecode === data.ProvinceCode ? (
+                    <IconchooseMonth />
+                  ) : (
+                    <></>
+                  )}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  }
+  rendercomponentDistricts() {
+    return (
+      <View style={{ marginBottom: 50 }}>
+        <Text style={[Styless.texttitlemodel1]}>
+          {I18n.locale === "th" ? "เลือกอำเภอ" : "Select Districts"}
+        </Text>
+        <View style={Styless.lineinmodel} />
+        <ScrollView style={{ marginBottom: 30, marginHorizontal: 20 }}>
+          {this.state.Datadistricts.map((data, index) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  this.SelecitDistricts({
+                    item:
+                      I18n.locale === "th"
+                        ? { Data: data.DistrictNameTh }
+                        : { provinceEN: data.DistrictNameEn },
+
+                    index: data.DistrictCode,
+                  });
+                }}
+                style={{
+                  flexDirection: "row",
+                  borderBottomWidth: 1,
+                  borderColor: COLORSFont.borderGray1,
+                  margin: 5,
+                  padding: 8,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={
+                      this.state.togleDistrictscode === data.DistrictCode
+                        ? Styless.textck
+                        : Styless.textnock
+                    }
+                  >
+                    {I18n.locale === "th"
+                      ? data.DistrictNameTh
+                      : data.DistrictNameEn}
+                  </Text>
+                </View>
+                <View>
+                  {this.state.togleDistrictscode === data.DistrictCode ? (
+                    <IconchooseMonth />
+                  ) : (
+                    <></>
+                  )}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  }
+
+  rendercomponentSubDistricts() {
+    // const { Datasubdistrictss } = this.state;
+    // console.log("Datadistricts", JSON.stringify(Datadistricts));
+    return (
+      <View style={{ marginBottom: 50 }}>
+        <Text style={[Styless.texttitlemodel1]}>
+          {I18n.locale === "th" ? "เลือกตำบล" : "Select SubDistricts"}
+        </Text>
+        <View style={Styless.lineinmodel} />
+        <ScrollView style={{ marginBottom: 30, marginHorizontal: 20 }}>
+          {this.state.Datasubdistrictss.map((data, index) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  this.SelecitSubDistricts({
+                    item:
+                      I18n.locale === "th"
+                        ? { Data: data.SubDistrictNameTh }
+                        : { provinceEN: data.SubDistrictNameTh },
+                    index: data.SubDistrictCode,
+                  });
+                }}
+                style={{
+                  flexDirection: "row",
+                  borderBottomWidth: 1,
+                  borderColor: COLORSFont.borderGray1,
+                  margin: 5,
+                  padding: 8,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={
+                      this.state.togleSubDistrictscode === data.SubDistrictCode
+                        ? Styless.textck
+                        : Styless.textnock
+                    }
+                  >
+                    {I18n.locale === "th"
+                      ? data.SubDistrictNameTh
+                      : data.SubDistrictNameTh}
+                  </Text>
+                </View>
+                <View>
+                  {this.state.togleSubDistrictscode === data.SubDistrictCode ? (
+                    <IconchooseMonth />
+                  ) : (
+                    <></>
+                  )}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  }
+  rendercomponentCountry() {
+    return (
+      <View style={{ marginBottom: 50 }}>
+        <Text style={[Styless.texttitlemodel1]}>
+          {I18n.locale === "th" ? "เลือกประเทศ" : "Select SubDistricts"}
+        </Text>
+        <View style={Styless.lineinmodel} />
+        <ScrollView style={{ marginBottom: 30, marginHorizontal: 20 }}>
+          {DataCountry.map((data, index) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  this.SelectCountry({
+                    item:
+                      I18n.locale === "th"
+                        ? { Data: data.CountryNameTh }
+                        : { provinceEN: data.CountryNameEn },
+                    index: data.CountryId,
+                  });
+                }}
+                style={{
+                  flexDirection: "row",
+                  borderBottomWidth: 1,
+                  borderColor: COLORSFont.borderGray1,
+                  margin: 5,
+                  padding: 8,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={
+                      this.state.togleCountryId === data.CountryId
+                        ? Styless.textck
+                        : Styless.textnock
+                    }
+                  >
+                    {I18n.locale === "th"
+                      ? data.CountryNameTh
+                      : data.CountryNameEn}
+                  </Text>
+                </View>
+                <View>
+                  {this.state.togleCountryId === data.CountryId ? (
+                    <IconchooseMonth />
+                  ) : (
+                    <></>
+                  )}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  }
+
+  rendercomponentTitlename() {
+    return (
+      <View style={{ marginBottom: 50 }}>
+        <Text style={[Styless.texttitlemodel1]}>
+          {I18n.locale === "th" ? "เลือกคำนำหน้าชื่อ" : "Select Title name"}
+        </Text>
+        <View style={Styless.lineinmodel} />
+        <ScrollView style={{ marginBottom: 30, marginHorizontal: 20 }}>
+          {DataTitlename.map((data, index) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  this.SelectTitlename({
+                    item:
+                      I18n.locale === "th"
+                        ? { Data: data.TitelNameTh }
+                        : { provinceEN: data.TitleNameEn },
+                    index: data.TitleNameId,
+                  });
+                }}
+                style={{
+                  flexDirection: "row",
+                  borderBottomWidth: 1,
+                  borderColor: COLORSFont.borderGray1,
+                  margin: 5,
+                  padding: 8,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={
+                      this.state.togleTitleNameId === data.TitleNameId
+                        ? Styless.textck
+                        : Styless.textnock
+                    }
+                  >
+                    {I18n.locale === "th" ? data.TitelNameTh : data.TitleNameEn}
+                  </Text>
+                </View>
+                <View>
+                  {this.state.togleTitleNameId === data.TitleNameId ? (
+                    <IconchooseMonth />
+                  ) : (
+                    <></>
+                  )}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  }
+
+  //////////////// zone components แก้ไข ข้อมูลส่วนตัว /////////////////////
+
+  renderFromEdit() {
+    const { PID, TYPE, ACTIVITICODE, IDCARD, TOKEN } = this.props.route.params;
+    const {
+      FormDataProfiles,
+      FormDatatype1addnress,
+      FormDatatype1contact,
+      SendDataFromProfiles,
+
+      selectcheckdistricts,
+      togleprovincecode,
+      clarnames,
+      nameprovinces,
+      nameDistricts,
+      nameSubDistricts,
+      clarnamesnameSubDistricts,
+      nameCountry,
+      nameTitlename,
+    } = this.state;
 
     return (
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#FFF",
-
-          borderRadius: 8,
-          marginBottom: 10,
-        }}
-      >
-        <View style={{ flexDirection: "row", margin: 10 }}>
-          <View style={{}}>
-            <>
-              {item.activity_list_type === 43 ? (
-                <Image
-                  source={require("../../image/Elrean.png")}
-                  style={Styles.imgElearing}
-                />
-              ) : (
-                <>
-                  {item.formTypeActivity === 1 ? (
-                    <Image
-                      source={require("../../image/imgDevnew.png")}
-                      style={Styles.imgElearing}
-                    />
-                  ) : (
-                    <Image
-                      resizeMode={"cover"}
-                      source={{
-                        uri:
-                          item.activity_list_logo_thumb === ""
-                            ? "http://one.ditp.go.th/dist/img/icon/no-image.png"
-                            : item.activity_list_logo_thumb,
-                      }}
-                      style={
-                        item.activity_list_logo_thumb === ""
-                          ? Styles.ImgList1
-                          : Styles.ImgList
-                      }
-                    />
-                  )}
-                </>
-              )}
-            </>
-          </View>
-          <View style={{ marginHorizontal: 15, flex: 1 }}>
-            <Text
-              numberOfLines={2}
-              style={{
-                color: COLORSFont.textblack,
-                fontFamily: FONTFAMILY_.MitrRegular,
-              }}
-            >
-              {item.activity_name_th}
-            </Text>
-            <Text style={Styles.TextDateList}>
-              {I18n.t("translate_Join")}
-              {"  "}
-
-              {formatdate(item.regis_date)}
-            </Text>
-
-            <TouchableOpacity onPress={() => {}} style={{}}>
-              {item.activity_status.map((data, index) => {
+      <ScrollView>
+        <View style={{ marginHorizontal: 10 }}>
+          {/* check ถ้าเป็น type1 หรือ 2 ก็เข้า loop */}
+          {TYPE === 1 || TYPE === 2 ? (
+            <View style={Styless.Vieweditfrom}>
+              {/* FormDataProfiles คือ ข้อมูลส่วนตัว */}
+              {FormDataProfiles.map((data, index) => {
                 return (
-                  <>
-                    {data.status_active === "Y" ? (
-                      <>
-                        {data.status_name !== "ทำแบบประเมิน" && (
-                          <View
-                            style={{
-                              justifyContent: "center",
-                            }}
-                          >
-                            <Text
-                              style={{
-                                color: COLORSFont.yellow,
-                                fontSize: 13,
-                                fontFamily: FONTFAMILY_.MitrRegular,
-                              }}
-                            >
-                              {data.status_name}
-                            </Text>
-                          </View>
-                        )}
+                  <View
+                    style={{
+                      marginBottom: 5,
+                    }}
+                  >
+                    <Text style={Styless.texteditfrom}>{data.Label}</Text>
 
-                        {data.status_name === "ทำแบบประเมิน" && (
-                          <View
-                            style={{
-                              justifyContent: "center",
-                            }}
-                          >
-                            <Text
-                              style={{
-                                color: COLORSFont.textblack,
-                                fontSize: 13,
-                                fontFamily: FONTFAMILY_.MitrLight,
-                                marginBottom: 5,
-                              }}
-                            >
-                              {data.status_name}
-                            </Text>
-                            <TouchableOpacity
-                              onPress={() => {
-                                _getFormsSurvey(
-                                  item,
-                                  this.props.dispatch,
-                                  navigation
-                                );
-                                // alert(item.id_list)
-                                // _getFormsSurvey
-                                // navigation.navigate("SurveyForm1imgDevnew", {
-                                //   Dataitem: item,
-                                // });
-                              }}
-                              style={{
-                                width: "50%",
-                                height: 37,
-                                backgroundColor: COLORSFont.Primary700,
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                marginBottom: 10,
-                              }}
-                            >
-                              <View
-                                style={{
-                                  flexDirection: "row",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <View
-                                  style={{
-                                    marginHorizontal: 5,
-                                    justifyContent: "center",
-                                    top: 2,
-                                  }}
-                                >
-                                  <IconSurvey />
-                                </View>
-                                <View style={{}}>
-                                  <Text
-                                    style={{
-                                      fontSize: 14,
-                                      fontFamily: FONTFAMILY_.MitrLight,
-                                      color: COLORSFont.white,
-                                    }}
-                                  >
-                                    {"ประเมิน"}
-                                  </Text>
-                                </View>
-                              </View>
-                            </TouchableOpacity>
-                          </View>
-                        )}
-                      </>
-                    ) : (
-                      <View style={{ height: 0 }} />
-                    )}
-                  </>
+                    <View style={{}}>
+                      <TextInput
+                        onChangeText={(text) => {}}
+                        editable={false}
+                        style={Styless.textinputdisble}
+                      >
+                        {data.Data}
+                      </TextInput>
+                    </View>
+                  </View>
                 );
               })}
-            </TouchableOpacity>
-          </View>
+              {/* FormDatatype1addnress คือ ข้อมูลที่อยู่ */}
+              {FormDatatype1addnress.map((data, index) => {
+                return (
+                  <View
+                    style={{
+                      marginBottom: 5,
+                    }}
+                  >
+                    {/* ที่อยู่ไทย */}
+                    {index === 0 && (
+                      <>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <View style={{}}>
+                          <TextInput
+                            onChangeText={(text) => {
+                              this.setState({
+                                AddressTH: text,
+                              });
+                            }}
+                            style={Styless.textinput}
+                          >
+                            {data.Data}
+                          </TextInput>
+                        </View>
+                      </>
+                    )}
+
+                    {/* ที่อยู่อังกฤษ */}
+                    {index === 1 && (
+                      <>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <View style={{}}>
+                          <TextInput
+                            onChangeText={(text) => {
+                              this.setState({
+                                AddressEn: text,
+                              });
+                            }}
+                            style={Styless.textinput}
+                          >
+                            {data.Data}
+                          </TextInput>
+                        </View>
+                      </>
+                    )}
+
+                    {/* จังหวัด */}
+                    {index === 2 && (
+                      <View>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.modelProvince.open();
+                          }}
+                          style={Styless.viewcombobox}
+                        >
+                          <View style={{ flex: 1 }}>
+                            <Text style={Styless.textincombobox}>
+                              {nameprovinces === "" ? data.Data : nameprovinces}
+                            </Text>
+                          </View>
+                          <View style={{ justifyContent: "center" }}>
+                            <Icon0
+                              style={{}}
+                              name={"chevron-down"}
+                              size={16}
+                              color={COLORSFont.textblack}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    {/* อำเภอ */}
+                    {index === 3 && (
+                      <View>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (this.state.openDistricts === true) {
+                              this.FilterDistrict(
+                                FormDatatype1addnress[2].ID,
+                                FormDatatype1addnress[2].Data,
+                                0
+                              );
+                            }
+
+                            setTimeout(() => {
+                              this.modelDistricts.open();
+                            }, 200);
+                          }}
+                          style={Styless.viewcombobox}
+                        >
+                          <View style={{ flex: 1 }}>
+                            <Text style={Styless.textincombobox}>
+                              {clarnames === true ? nameDistricts : data.Data}
+                            </Text>
+                          </View>
+                          <View style={{ justifyContent: "center" }}>
+                            <Icon0
+                              style={{}}
+                              name={"chevron-down"}
+                              size={16}
+                              color={COLORSFont.textblack}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    {/* ตำบล */}
+                    {index === 4 && (
+                      <View>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (this.state.openSubDistricts === true) {
+                              this.FilterSubDistrict(
+                                FormDatatype1addnress[3].ID,
+                                FormDatatype1addnress[3].Data,
+                                0
+                              );
+                            }
+                            setTimeout(() => {
+                              this.modelSubDistricts.open();
+                            }, 200);
+                          }}
+                          style={Styless.viewcombobox}
+                        >
+                          <View style={{ flex: 1 }}>
+                            <Text style={Styless.textincombobox}>
+                              {clarnamesnameSubDistricts === true
+                                ? nameSubDistricts
+                                : data.Data}
+                            </Text>
+                          </View>
+                          <View style={{ justifyContent: "center" }}>
+                            <Icon0
+                              style={{}}
+                              name={"chevron-down"}
+                              size={16}
+                              color={COLORSFont.textblack}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    {/* รหัสไปรษณีย์ */}
+                    {index === 5 && (
+                      <>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <View style={{}}>
+                          <TextInput
+                            onChangeText={(text) => {
+                              this.setState({
+                                PostCode: text,
+                              });
+                            }}
+                            style={Styless.textinput}
+                          >
+                            {data.Data}
+                          </TextInput>
+                        </View>
+                      </>
+                    )}
+                    {/* ประเทศไทย */}
+                    {index === 6 && (
+                      <View>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <TouchableOpacity
+                          onPress={() => {
+                            setTimeout(() => {
+                              this.modelCountry.open();
+                            }, 200);
+                          }}
+                          style={Styless.viewcombobox}
+                        >
+                          <View style={{ flex: 1 }}>
+                            <Text style={Styless.textincombobox}>
+                              {nameCountry === "" ? data.Data : nameCountry}
+                            </Text>
+                          </View>
+                          <View style={{ justifyContent: "center" }}>
+                            <Icon0
+                              style={{}}
+                              name={"chevron-down"}
+                              size={16}
+                              color={COLORSFont.textblack}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+                );
+              })}
+
+              {/* FormDatatype1contact คือ ข้อมูลทติดต่อ */}
+              {FormDatatype1contact.map((data, index) => {
+                return (
+                  <View
+                    style={{
+                      marginBottom: 5,
+                    }}
+                  >
+                    {index === 0 && (
+                      <>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <View style={{}}>
+                          <TextInput
+                            onChangeText={(text) => {
+                              this.setState({
+                                Tel: text,
+                              });
+                            }}
+                            style={Styless.textinput}
+                          >
+                            {data.Data}
+                          </TextInput>
+                        </View>
+                      </>
+                    )}
+                    {index === 1 && (
+                      <>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <View style={{}}>
+                          <TextInput
+                            onChangeText={(text) => {
+                              this.setState({
+                                Fax: text,
+                              });
+                            }}
+                            style={Styless.textinput}
+                          >
+                            {data.Data}
+                          </TextInput>
+                        </View>
+                      </>
+                    )}
+                    {index === 2 && (
+                      <>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <View style={{}}>
+                          <TextInput
+                            onChangeText={(text) => {
+                              this.setState({
+                                email: text,
+                              });
+                            }}
+                            style={Styless.textinput}
+                          >
+                            {data.Data}
+                          </TextInput>
+                        </View>
+                      </>
+                    )}
+                    {index === 3 && (
+                      <>
+                        <Text style={Styless.texteditfrom}>{data.Label}</Text>
+
+                        <View style={{}}>
+                          <TextInput
+                            onChangeText={(text) => {
+                              this.setState({
+                                Website: text,
+                              });
+                            }}
+                            style={Styless.textinput}
+                          >
+                            {data.Data}
+                          </TextInput>
+                        </View>
+                      </>
+                    )}
+                  </View>
+                );
+              })}
+            </View>
+          ) : (
+            // type 3 4 5
+            <></>
+          )}
+
+          <TouchableOpacity
+            onPress={() => {
+              this.UpdateFromProfiles();
+              this.RBSheet.close();
+            }}
+            style={Styless.btnsave}
+          >
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <Text style={Styless.textsave}>{"บันทึก"}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+        <RBSheet
+          ref={(ref) => {
+            this.modelProvince = ref;
+          }}
+          height={490}
+          dragFromTopOnly={true}
+          closeOnDragDown={true}
+          openDuration={200}
+          customStyles={{
+            container: {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+            },
+          }}
+        >
+          <View style={{ marginBottom: 50 }}>
+            {this.rendercomponentprovince()}
+          </View>
+        </RBSheet>
+        <RBSheet
+          ref={(ref) => {
+            this.modelDistricts = ref;
+          }}
+          height={490}
+          dragFromTopOnly={true}
+          closeOnDragDown={true}
+          openDuration={200}
+          customStyles={{
+            container: {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+            },
+          }}
+        >
+          <View style={{ marginBottom: 50 }}>
+            {this.rendercomponentDistricts()}
+          </View>
+        </RBSheet>
+        <RBSheet
+          ref={(ref) => {
+            this.modelSubDistricts = ref;
+          }}
+          height={490}
+          dragFromTopOnly={true}
+          closeOnDragDown={true}
+          openDuration={200}
+          customStyles={{
+            container: {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+            },
+          }}
+        >
+          <View style={{ marginBottom: 50 }}>
+            {this.rendercomponentSubDistricts()}
+          </View>
+        </RBSheet>
+        <RBSheet
+          ref={(ref) => {
+            this.modelCountry = ref;
+          }}
+          height={490}
+          dragFromTopOnly={true}
+          closeOnDragDown={true}
+          openDuration={200}
+          customStyles={{
+            container: {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+            },
+          }}
+        >
+          <View style={{ marginBottom: 50 }}>
+            {this.rendercomponentCountry()}
+          </View>
+        </RBSheet>
+        <RBSheet
+          ref={(ref) => {
+            this.modelTitlename = ref;
+          }}
+          height={300}
+          dragFromTopOnly={true}
+          closeOnDragDown={true}
+          openDuration={200}
+          customStyles={{
+            container: {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+            },
+          }}
+        >
+          <View style={{ marginBottom: 50 }}>
+            {this.rendercomponentTitlename()}
+          </View>
+        </RBSheet>
+      </ScrollView>
     );
-  };
-
-  handleSlide = (type) => {
-    let {
-      active,
-      xTabOne,
-      xTabTwo,
-      translateX,
-      translateXTabOne,
-      translateXTabTwo,
-    } = this.state;
-    Animated.spring(translateX, {
-      toValue: type,
-      duration: 10,
-    }).start();
-    if (active === 0) {
-      Animated.parallel([
-        Animated.spring(translateXTabOne, {
-          toValue: 0,
-          duration: 10,
-        }).start(),
-        Animated.spring(translateXTabTwo, {
-          toValue: width,
-          duration: 10,
-        }).start(),
-      ]);
-    } else {
-      Animated.parallel([
-        Animated.spring(translateXTabOne, {
-          toValue: -width,
-          duration: 10,
-        }).start(),
-        Animated.spring(translateXTabTwo, {
-          toValue: 0,
-          duration: 10,
-        }).start(),
-      ]);
-    }
-  };
-
+  }
+  //////////////// zone components /////////////////////
+  /// render page///////
   render() {
-    const { navigation, DataRegister, DataSmeAuth } = this.props;
+    // this.props.navigation.navigate
 
-    let {
-      xTabOne,
-      xTabTwo,
-      translateX,
-      active,
-      translateXTabOne,
-      translateXTabTwo,
-      translateY,
-      DatatoHistory,
-      Activityprocesslength,
+    const {
+      Dataitem,
+      PID,
+      TYPE,
+      ACTIVITICODE,
+      IDCARD,
+      TOKEN,
+      FORMTYPE,
+    } = this.props.route.params;
+
+    const {
+      FormDataProfiles,
+      FormDatatype1addnress,
+      FormDatatype1contact,
+      ShowDatabusiness,
+      dataProfiles,
     } = this.state;
+    const { onScroll = () => {} } = this.props;
 
     return (
-      <View style={{ width: "100%" }}>
-        <View style={{ flex: 1, marginHorizontal: 20 }}>
-          <View style={{ marginBottom: 16, flexDirection: "row" }}>
-            <View style={{ flex: 1 }}>
-              <Text style={Styles.textTitlepro2}>{"กิจกรรมกรม"}</Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("ActivityHistory", {
-                  _DatatoHistory: DatatoHistory,
-                });
-              }}
-              style={{
-                flexDirection: "row",
-                flex: 1,
-                justifyContent: "flex-end",
-              }}
-            >
-              <View style={{ justifyContent: "center" }}>
-                <Text style={Styles.textTitlepro}>
-                  {"ประวัติการร่วมกิจกรรม"}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+      <Root>
+        <View style={Styles.ViewSub1}>
+          {/* FROM EDIT ฟอมแก้ไข ข้อมูลส่วนตัว */}
+          <RBSheet
+            keyboardAvoidingViewEnabled={true}
+            animationType={"slide"}
+            ref={(ref) => {
+              this.RBSheet = ref;
+            }}
+            height={height}
+            openDuration={250}
+            customStyles={{
+              wrapper: {
+                backgroundColor: "transparent",
+              },
 
-          {/* tab select menu  */}
-          <View
-            style={{
-              width: "100%",
-              marginLeft: "auto",
-              marginRight: "auto",
+              container: {},
             }}
           >
             <View
               style={{
-                flexDirection: "row",
-
-                height: 44,
-                position: "relative",
-                marginHorizontal: 0,
+                overflow: "hidden",
+                marginTop: Platform.OS === "android" ? -20 : 0,
               }}
             >
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  height: 44,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderWidth: 0,
-                  borderColor: "rgba(255, 255, 255, 0.2)",
-                  backgroundColor: "#FFF",
-                  borderRadius: 4,
-                  borderRightWidth: 0,
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0,
+              <Header
+                ViewComponent={LinearGradient} // Don't forget this!
+                linearGradientProps={{
+                  colors: [COLORbg.LinearGradient1, COLORbg.LinearGradient2],
+                  start: { x: 0, y: 1 },
+                  end: { x: 1, y: 1 },
                 }}
-                onPress={() => this.setState({ active: 0 })}
-              >
-                <View
-                  style={{
-                    borderRightWidth: 1,
-                    borderRightColor: COLORbg.bggray,
-                    width: "100%",
-                  }}
-                >
-                  <View style={{ justifyContent: "center", marginVertical: 9 }}>
-                    <Text
-                      style={{
-                        fontFamily:
-                          active === 0
-                            ? FONTFAMILY_.MitrRegular
-                            : FONTFAMILY_.MitrLight,
-                        fontSize: 14,
-                        color:
-                          active === 0
-                            ? COLORSFont.textblack
-                            : COLORSFont.textblackholo,
-
-                        textAlign: "center",
-                      }}
-                    >
-                      {"กำลังกรอกใบสมัคร"}
+                leftComponent={<></>}
+                centerComponent={
+                  <View style={{}}>
+                    <Text style={Styless.textedittitle}>
+                      {"แก้ไขข้อมูลนิติบุคคล"}
                     </Text>
                   </View>
-                  <View style={{ justifyContent: "center" }}>
-                    {active === 0 && (
-                      <LinearGradient
-                        onLayout={(event) =>
-                          this.setState({
-                            xTabOne: event.nativeEvent.layout.x,
-                          })
-                        }
-                        colors={[
-                          COLORbg.LinearGradient1,
-                          COLORbg.LinearGradient2,
-                        ]}
-                        start={{ x: 0, y: 1 }}
-                        end={{ x: 1, y: 1 }}
-                        style={{
-                          height: 3,
-                          borderBottomLeftRadius: active === 0 ? 20 : 0,
-
-                          width: "100%",
-                        }}
-                      />
-                    )}
-                  </View>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderWidth: 0,
-                  borderColor: "rgba(255, 255, 255, 0.2)",
-                  backgroundColor: "#FFF",
-                  borderRadius: 4,
-                  borderLeftWidth: 0,
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0,
-                  flexDirection: "row",
-                }}
-                onPress={() => this.setState({ active: 1 })}
-              >
-                <View
-                  style={{
-                    borderRightWidth: 1,
-                    borderRightColor: COLORbg.bggray,
-                    width: "100%",
-                  }}
-                >
-                  <View style={{ justifyContent: "center", marginVertical: 9 }}>
-                    <Text
-                      style={{
-                        fontFamily:
-                          active === 1
-                            ? FONTFAMILY_.MitrRegular
-                            : FONTFAMILY_.MitrLight,
-                        fontSize: 14,
-                        color:
-                          active === 1
-                            ? COLORSFont.textblack
-                            : COLORSFont.textblackholo,
-
-                        textAlign: "center",
-                      }}
-                    >
-                      {"อยู่ระหว่างดำเนินงาน"}
-                    </Text>
-                  </View>
-                  <View style={{ justifyContent: "center" }}>
-                    {active === 1 && (
-                      <LinearGradient
-                        onLayout={(event) =>
-                          this.setState({
-                            xTabOne: event.nativeEvent.layout.x,
-                          })
-                        }
-                        colors={[
-                          COLORbg.LinearGradient1,
-                          COLORbg.LinearGradient2,
-                        ]}
-                        start={{ x: 0, y: 1 }}
-                        end={{ x: 1, y: 1 }}
-                        style={{
-                          height: 3,
-                          borderBottomRightRadius: active === 1 ? 20 : 0,
-
-                          width: "100%",
-                        }}
-                      />
-                    )}
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <ScrollView>
-              <Animated.View
-                style={{
-                  marginTop: 20,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                onLayout={(event) =>
-                  this.setState({
-                    translateY: event.nativeEvent.layout.height,
-                  })
                 }
-              >
-                {/* import componect ActivityList กำลังสมัครใบสมัคร */}
-                {active === 0 && (
-                  <View style={{ width: "100%" }}>
-                    <View style={{ flex: 1 }}>
-                      <FlatList
-                        scrollEnabled={false}
-                        style={{}}
-                        renderItem={this.ListDataAct1}
-                        data={this.DataAct2(1)}
-                        keyExtractor={(item, index) => index}
-                      />
+                rightComponent={
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.RBSheet.close();
+                      this.setState({ provinces: "", togleprovince: [] });
+                    }}
+                    style={{ padding: 15 }}
+                  >
+                    <Iconclose />
+                  </TouchableOpacity>
+                }
+              />
+            </View>
+            <KeyboardAvoidingView
+              behavior={"padding"}
+              style={{ flex: 1, zIndex: -1 }}
+            >
+              {this.renderFromEdit()}
+            </KeyboardAvoidingView>
+          </RBSheet>
 
-                      {this.state.Activityregisterlength.length > 3 && (
-                        <TouchableOpacity
-                          style={Styles.BThide}
-                          onPress={() => {
-                            this.state.ActivityAccept.length === this.state.Page
-                              ? this.setState({ Page: 3 })
-                              : this.setState({
-                                  Page: this.state.ActivityAccept.length,
-                                });
-                          }}
-                        >
-                          <Text style={Styles.TextHide}>
-                            {" "}
-                            {this.state.ActivityAccept.length ===
-                            this.state.Page
-                              ? I18n.t("translate_Hide")
-                              : I18n.t("translate_See_more")}
-                          </Text>
-                        </TouchableOpacity>
-                        // </View>
-                      )}
-                    </View>
+          {/* FROM EDIT ฟอมแก้ไข ข้อมูลส่วนตัว */}
 
-                    <View />
-                  </View>
-                )}
-              </Animated.View>
+          {/* <Headers
+            navigation={this.props.navigation}
+            backScreen={false}
+            title={
+              I18n.locale === "th"
+                ? this.props.getUser.userDetails.res_result.type === 1 ||
+                  this.props.getUser.userDetails.res_result.type === 2
+                  ? "สมัครร่วมกิจกรรม (นิติบุคคล)"
+                  : "สมัครร่วมกิจกรรม (บุคคลทั่วไป)"
+                : "Apply for the event"
+            }
+          /> */}
 
-              <Animated.View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {active === 1 && (
-                  <View style={{ width: "100%" }}>
-                    <View style={{ flex: 1 }}>
-                      <FlatList
-                        scrollEnabled={false}
-                        style={{}}
-                        renderItem={this.ListDataprocess}
-                        data={this.DataAct2(2)}
-                        keyExtractor={(item, index) => index}
-                      />
-
-                      {/* <View style={{}}> */}
-                      {this.state.Activityprocesslength.length > 3 && (
-                        // <View style={Styles.ViewSub12}>
-                        <TouchableOpacity
-                          style={Styles.BThide}
-                          onPress={() => {
-                            // alert(this.state.ActivityAccept.length)
-                            this.state.ActivityAccept.length === this.state.Page
-                              ? this.setState({ Page: 3 })
-                              : this.setState({
-                                  Page: this.state.ActivityAccept.length,
-                                });
-                          }}
-                        >
-                          <Text style={Styles.TextHide}>
-                            {" "}
-                            {this.state.ActivityAccept.length ===
-                            this.state.Page
-                              ? I18n.t("translate_Hide")
-                              : I18n.t("translate_See_more")}
-                          </Text>
-                        </TouchableOpacity>
-                        // </View>
-                      )}
-                    </View>
-
-                    <View />
-                  </View>
-                )}
-              </Animated.View>
-            </ScrollView>
-          </View>
-
-          {/* tab select menu  */}
+          <ScrollView   ref={(ref) => {
+            this.ListViewscrollTo = ref;
+          }} style={styles.container}>
+            <ParallaxScrollView
+              onScroll={onScroll}
+              headerBackgroundColor="#333"
+              stickyHeaderHeight={STICKY_HEADER_HEIGHT}
+              parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
+              backgroundSpeed={10}
+              renderBackground={() => (
+                <View key="background">
+                  <Image
+                    source={{
+                      uri:
+                        "https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg",
+                      width: window.width,
+                      height: PARALLAX_HEADER_HEIGHT,
+                    }}
+                  />
+                  <View
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      width: window.width,
+                      backgroundColor: "rgba(0,0,0,.4)",
+                      height: PARALLAX_HEADER_HEIGHT,
+                    }}
+                  />
+                </View>
+              )}
+              renderForeground={() => (
+                <View key="parallax-header" style={styles.parallaxHeader}>
+                  <Image
+                    style={styles.avatar}
+                    source={{
+                      uri:
+                        "https://pbs.twimg.com/profile_images/2694242404/5b0619220a92d391534b0cd89bf5adc1_400x400.jpeg",
+                      width: AVATAR_SIZE,
+                      height: AVATAR_SIZE,
+                    }}
+                  />
+                  <Text style={styles.sectionSpeakerText}>
+                    Talks by Rich Hickey
+                  </Text>
+                  <Text style={styles.sectionTitleText}>
+                    CTO of Cognitec, Creator of Clojure
+                  </Text>
+                  <View key="fixed-header" style={styles.fixedSection}>
+            
+                     <Text style={styles.sectionTitleText}
+                    onPress={() => this.ListViewscrollTo.scrollTo({ x: 0, y: 0 })}
+                  >
+                    Scroll to top
+                  </Text>
+                </View>
+                </View>
+              )}
+              renderStickyHeader={() => (
+                <View key="sticky-header" style={styles.stickySection}>
+                  <Text style={styles.stickySectionText}>
+                    Rich Hickey Talks
+                  </Text>
+                </View>
+              )}
+              renderFixedHeader={() => (
+                <View key="fixed-header" style={styles.fixedSection}>
+                  <Text
+                    style={styles.fixedSectionText}
+                    onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}
+                  >
+                    Scroll to top
+                  </Text>
+                </View>
+              )}
+            />
+          </ScrollView>
         </View>
-      </View>
+      </Root>
     );
   }
-}
 
-const mapStateToProps = (state) => ({
-  getUser: state.userReducer.getUser,
-  authData: state.authReducer.authData,
-  getImg: state.authReducer.getImg,
-  getStatus: state.dataReducer.getStatus,
-  getNotification: state.authReducer.getNotification,
-});
+  /// render page///////
+}
 
 const mapDispatchToProps = (dispatch) => ({
   dispatch,
 });
 
+const mapStateToProps = (state) => ({
+  LoadingCounters: state.globalReducer.LoadingCounters,
+  authData: state.authReducer.authData,
+  getUser: state.userReducer.getUser,
+  getStatus1: state.dataReducer.getStatus,
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Activities);
+)(TradeActivityFrom1Profiles);
+
+/////
+
+const window = Dimensions.get("window");
+
+const AVATAR_SIZE = 120;
+const ROW_HEIGHT = 60;
+const PARALLAX_HEADER_HEIGHT = 350;
+const STICKY_HEADER_HEIGHT = 70;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "black",
+  },
+  background: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: window.width,
+    height: PARALLAX_HEADER_HEIGHT,
+  },
+  stickySection: {
+    height: STICKY_HEADER_HEIGHT,
+    width: 300,
+    justifyContent: "flex-end",
+  },
+  stickySectionText: {
+    color: "white",
+    fontSize: 20,
+    margin: 10,
+  },
+  fixedSection: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+  },
+  fixedSectionText: {
+    color: "#999",
+    fontSize: 20,
+  },
+  parallaxHeader: {
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "column",
+    paddingTop: 100,
+  },
+  avatar: {
+    marginBottom: 10,
+    borderRadius: AVATAR_SIZE / 2,
+  },
+  sectionSpeakerText: {
+    color: "white",
+    fontSize: 24,
+    paddingVertical: 5,
+  },
+  sectionTitleText: {
+    color: "white",
+    fontSize: 18,
+    paddingVertical: 5,
+  },
+  row: {
+    overflow: "hidden",
+    paddingHorizontal: 10,
+    height: ROW_HEIGHT,
+    backgroundColor: "white",
+    borderColor: "#ccc",
+    borderBottomWidth: 1,
+    justifyContent: "center",
+  },
+  rowText: {
+    fontSize: 20,
+  },
+});
