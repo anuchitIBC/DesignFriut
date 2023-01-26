@@ -61,7 +61,7 @@ const RegisterProfile = () => {
     return (
         <ImageBackground
             source={require('../../images/BgRegister.png')}
-            resizeMode={'contain'}
+            resizeMode={'cover'}
             style={{ height: '100%', backgroundColor: '#181920' }}>
 
 

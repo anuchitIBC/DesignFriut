@@ -5,7 +5,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import {COLORS} from '../css/Allcolors'
+import {COLORS, COLORSFont} from '../css/Allcolors'
 
 const windowns = Dimensions.get('window');
 const {height, width} = Dimensions.get('window');
@@ -15,5 +15,9 @@ export default StyleSheet.create({
   colorbg: {
     backgroundColor:COLORS.bgGrreen
   },
+  ViewBgcolor: {
+    backgroundColor: COLORSFont.bgColor, flex: 1,
+},
+
  
 });

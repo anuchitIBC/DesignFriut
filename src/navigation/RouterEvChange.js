@@ -40,6 +40,15 @@ import SkinSrceen from '../pages/01_Login/SkinSrceen'
 import MenuRegisterScreen from '../pages/02_Register/MenuRegisterScreen'
 import OtpScreen from '../pages/02_Register/OtpScreen'
 import RegisterProfileScreen from '../pages/02_Register/RegisterProfileScreen'
+import ConsentScreen from '../pages/03_ConsentPersonal/ConsentScreen';
+import ComponentResetpassSucess from '../pages/04_PIN/ComponentResetpassSucessScreen'
+import LoginPinScreen from '../pages/04_PIN/LoginPinScreen'
+import MenuFingerprintScanScreen from '../pages/04_PIN/MenuFingerprintScanScreen'
+import CarInfoemation from '../pages/05_CarInformation/CarInfoemationScreen';
+import HomeEV from '../pages/06_Home/HomeScreen'
+import MapsSrceen from '../pages/06_Home/MapsSrceen'
+
+
 
 // css sizescreen
 const windowns = Dimensions.get('window');
@@ -61,12 +70,21 @@ const RouterEvChange = () => {
   return (
 
     <>
+   {/* <IconCheckSucess/> */}
    {/* <LoginWithEmail/> */}
    {/* <MenuLoginSrceen/> */}
    {/* <SkinSrceen/> */}
    {/* <MenuRegisterScreen/> */}
    {/* <OtpScreen/> */}
-   <RegisterProfileScreen/>
+   {/* <RegisterProfileScreen/> */}
+   {/* <ConsentScreen/> */}
+   {/* <ComponentResetpassSucess/> */}
+   {/* <LoginPinScreen/> */}
+   {/* <MenuFingerprintScanScreen/> */}
+   {/* <CarInfoemation/> */}
+   {/* <HomeEV/> */}
+   <MapsSrceen/>
+  
    
    
     
