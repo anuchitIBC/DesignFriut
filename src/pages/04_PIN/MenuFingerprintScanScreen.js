@@ -54,7 +54,7 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 const CELL_COUNT = 6;
 
-const MenuFingerprintScanScreen = () => {
+const MenuFingerprintScanScreen = ({ navigation }) => {
 
 
     const pinView = useRef(null)
@@ -74,17 +74,8 @@ const MenuFingerprintScanScreen = () => {
 
 
     useEffect(() => {
-        if (enteredPin.length > 0) {
-            setShowRemoveButton(true)
-        } else {
-            setShowRemoveButton(false)
-        }
-        if (enteredPin.length === 8) {
-            setShowCompletedButton(true)
-        } else {
-            setShowCompletedButton(false)
-        }
-    }, [enteredPin])
+
+    }, [])
 
 
     return (
@@ -120,7 +111,13 @@ const MenuFingerprintScanScreen = () => {
                 style={{ marginHorizontal: 16, flex: 0.66, backgroundColor: null, justifyContent: "center", alignItems: "center" }}>
 
 
-                <TouchableOpacity style={[{ backgroundColor: null, flexDirection: 'row',marginBottom:16 }]}>
+                <TouchableOpacity
+
+                    onPress={() => {
+                        navigation.navigate('CarInfoemation');
+                    }}
+
+                    style={[{ backgroundColor: null, flexDirection: 'row', marginBottom: 16 }]}>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
 
                         // colors={['#2A2C31', '#2A2C31']}
@@ -142,7 +139,13 @@ const MenuFingerprintScanScreen = () => {
                         </View>
                     </LinearGradient>
                 </TouchableOpacity>
-                <TouchableOpacity style={[{ backgroundColor: null, flexDirection: 'row' }]}>
+                <TouchableOpacity
+
+                    onPress={() => {
+                        navigation.navigate('CarInfoemation');
+                    }}
+
+                    style={[{ backgroundColor: null, flexDirection: 'row' }]}>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
 
                         colors={['#FFF', '#FFF']}

@@ -54,7 +54,7 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 const CELL_COUNT = 6;
 
-const ConsentScreen = () => {
+const ConsentScreen = ({navigation}) => {
 
 
 
@@ -302,7 +302,15 @@ const ConsentScreen = () => {
             <View style={{ flex: 0.15, marginHorizontal: 16, marginBottom: 10 }}>
                 <View style={{ marginBottom: 15 }}></View>
 
-                <TouchableOpacity style={[{ backgroundColor: null, flexDirection: 'row', flex: 1 }]}>
+                <TouchableOpacity
+
+                onPress={()=>{
+                    
+                    // navigation
+                    navigation.navigate('LoginPinScreen');
+                }}
+                
+                style={[{ backgroundColor: null, flexDirection: 'row', flex: 1 }]}>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
 
                         colors={['#2A2C31', '#2A2C31']}

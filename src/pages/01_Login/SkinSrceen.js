@@ -109,6 +109,7 @@ const SkinSrceen = ({navigation}) => {
 
                 onPress={()=>{
                     navigation.navigate('MenuLoginSrceen');
+                    // MenuRegisterScreen
                 }}
 
 

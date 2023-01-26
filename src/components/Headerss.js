@@ -46,6 +46,7 @@ class Headerss extends React.Component {
       Hide2: 317,
       backHome: false,
       title: "",
+      
     };
   }
 
@@ -58,7 +59,7 @@ class Headerss extends React.Component {
           //  barStyle="light-content" // or directly
           containerStyle={{
             backgroundColor: null,
-            borderColor: null, marginTop: height * 0.08, marginHorizontal: 0,
+            borderColor: null, marginTop:Platform.OS ==='android'?20:height * 0.08, marginHorizontal: 0,
             // borderWidth:1,
             borderBottomColor: null,
             borderBottomWidth: 0
@@ -84,7 +85,8 @@ class Headerss extends React.Component {
                 {this.props.backScreen === false ? (
                   <TouchableOpacity
                     onPress={() => {
-                      // this.props.navigation.goBack();
+                      console.log(JSON.stringify (this.props.navigation))
+                      this.props.navigation.goBack();
                     }}
                     style={{padding:4, width: 50,
                       // borderWidth:1 

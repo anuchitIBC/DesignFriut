@@ -19,6 +19,19 @@ export const TextCSS = {
     fontSize: 12,
     fontWeight: '500',
   },
+  Text12blue02500_IBM_Regular: {
+    color: COLORSFont.blue02,
+    fontFamily: FONTFAMILY_.IBMPlexSansThaiMedium,
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  Text12Gray02400_IBM_Regular: {
+    color: COLORSFont.Gray02,
+    fontFamily: FONTFAMILY_.IBMPlexSansThaiMedium,
+    fontSize: 12,
+    fontWeight: '400',
+  },
+  
   //////////////// 14 //////////////
   Text14White_IBM_Regular: {
     color: COLORSFont.white,

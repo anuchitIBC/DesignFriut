@@ -54,7 +54,7 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 const CELL_COUNT = 6;
 
-const LoginPinScreen = () => {
+const LoginPinScreen = ({navigation}) => {
 
 
     const pinView = useRef(null)
@@ -79,8 +79,11 @@ const LoginPinScreen = () => {
         } else {
             setShowRemoveButton(false)
         }
-        if (enteredPin.length === 8) {
-            setShowCompletedButton(true)
+        if (enteredPin.length === 6) {
+            // setShowCompletedButton(true)
+
+            navigation.navigate('MenuFingerprintScanScreen');
+
         } else {
             setShowCompletedButton(false)
         }
@@ -147,13 +150,11 @@ const LoginPinScreen = () => {
                         if (key === "custom_right") {
                            
                         }
-                        if (key === "three") {
-                           
-                        }
+                        
                     }}
                     customLeftButton={showRemoveButton ? <IconDeletepin/>
                      : undefined}
-                    customRightButton={showCompletedButton ? <Icon name={"ios-unlock"} size={36} color={"#FFF"} />
+                    customRightButton={showCompletedButton ? <></>
                      : undefined}
                 />
             </View>

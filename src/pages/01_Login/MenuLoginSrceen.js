@@ -69,7 +69,7 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 //   },
 // ];
 
-const MenuLoginSrceen = () => {
+const MenuLoginSrceen = ({navigation}) => {
 
   const [spinner, setspinner] = useState(false)
 
@@ -101,7 +101,11 @@ const MenuLoginSrceen = () => {
       
       <ScrollView style={{flex:1}}>
       <View style={{ flex: 1, backgroundColor: null, marginHorizontal: 15 }}>
-        <TouchableOpacity style={[styles.Btncss, { backgroundColor: '#F3F5F6' }]}>
+        <TouchableOpacity
+         onPress={()=>{
+          navigation.navigate('OtpScreen');
+        }}
+        style={[styles.Btncss, { backgroundColor: '#F3F5F6' }]}>
           <View style={{ justifyContent: 'center', marginHorizontal: 10 }}>
             <IconGoogle />
           </View>
@@ -114,7 +118,13 @@ const MenuLoginSrceen = () => {
         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
           colors={['#0125E1', '#2084FC']}
           style={styles.Btncss}>
-          <TouchableOpacity style={[{ width: '50%', backgroundColor: null, flexDirection: 'row' }]}>
+          <TouchableOpacity
+
+          onPress={()=>{
+            navigation.navigate('OtpScreen');
+          }}
+          
+          style={[{ width: '50%', backgroundColor: null, flexDirection: 'row' }]}>
             <View style={{ justifyContent: 'center', marginHorizontal: 10 }}>
               <IconFackbook />
             </View>
@@ -128,7 +138,13 @@ const MenuLoginSrceen = () => {
         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
           colors={['rgba(49, 51, 64, 0.7)', 'rgba(36, 37, 45, 0.7)']}
           style={styles.Btncss}>
-          <TouchableOpacity style={[{ width: '50%', backgroundColor: null, flexDirection: 'row' }]}>
+          <TouchableOpacity
+           onPress={()=>{
+            navigation.navigate('LoginWithEmail');
+          }}
+          
+          
+          style={[{ width: '50%', backgroundColor: null, flexDirection: 'row' }]}>
             <View style={{ justifyContent: 'center', marginHorizontal: 10 }}>
               <IconMessage />
             </View>
@@ -139,7 +155,14 @@ const MenuLoginSrceen = () => {
 
         </LinearGradient>
 
-        <TouchableOpacity style={{ marginTop: 6, paddingVertical: 5 }}>
+        <TouchableOpacity
+        onPress={()=>{
+      
+            navigation.navigate('MenuRegisterScreen');
+            
+     
+        }}
+         style={{ marginTop: 6, paddingVertical: 5 }}>
           <Text style={[TextCSS.Text16blue02_IBM_Regular,{textAlign:'center'}]} >
             {'สมัครสมาชิก'}
           </Text>

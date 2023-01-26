@@ -71,7 +71,7 @@ const DataCheckValida = [
 
 ];
 
-const MenuRegisterScreen = () => {
+const MenuRegisterScreen = ({navigation}) => {
 
   const [spinner, setspinner] = useState(false)
 
@@ -93,7 +93,7 @@ const MenuRegisterScreen = () => {
 
       <Headerss
         badgeNumber="2"
-        navigation={''}
+        navigation={navigation}
         backScreen={false}
         ArrowColor={true}
         title={
@@ -258,7 +258,16 @@ const MenuRegisterScreen = () => {
       </KeyboardAvoidingView>
       <View style={{ flex: 0.15, backgroundColor: null, marginHorizontal: 16 }}>
 
-        <TouchableOpacity style={[{ backgroundColor: null, flexDirection: 'row' }]}>
+        <TouchableOpacity
+
+          onPress={() => {
+
+
+            navigation.navigate('OtpScreen');
+
+          }}
+
+          style={[{ backgroundColor: null, flexDirection: 'row' }]}>
           <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
 
             colors={['#2A2C31', '#2A2C31']}

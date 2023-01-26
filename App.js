@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import type {Node} from 'react';
+import type { Node } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -15,7 +15,7 @@ import {
   StyleSheet,
   Text,
   useColorScheme,
-  View,
+  View, YellowBox
 } from 'react-native';
 
 import {
@@ -51,6 +51,13 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  console.disableYellowBox = true;
+  YellowBox.ignoreWarnings(['Warning: ReactNative.createElement']);
+  YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
+  YellowBox.ignoreWarnings(['componentWillReceiveProps']);
+  YellowBox.ignoreWarnings(['componentWillMount']);
+  YellowBox.ignoreWarnings(['Animated: `useNativeDriver`'])
+
   // return (
   //   // <SafeAreaView style={{flex: 1, backgroundColor: '#307A59'}}>
   //   //   <StatusBar backgroundColor="#307A59" barStyle="light-content" />
@@ -62,14 +69,14 @@ const App = () => {
   //      {/* <RoutersAppintranet/> */}
   //       {/* <RouterAppKup/> */}
   //       <RouterEvChange/>
-      
+
   //   // </SafeAreaView>
   // );
 
-  return(
+  return (
     <>
-    <StatusBar backgroundColor="#FFF" barStyle='light-content' />
-     <RouterEvChange/>
+      <StatusBar backgroundColor="#FFF" barStyle='light-content' />
+      <RouterEvChange />
     </>
   )
 };

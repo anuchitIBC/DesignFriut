@@ -55,7 +55,7 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 const CELL_COUNT = 6;
 
-const CarInfoemation = () => {
+const CarInfoemation = ({ navigation }) => {
 
 
     const pinView = useRef(null)
@@ -93,7 +93,7 @@ const CarInfoemation = () => {
             source={require('../../images/BgRegister.png')}
             resizeMode={'cover'}
             style={{ height: '100%', backgroundColor: '#181920' }}>
-            <View style={{ marginTop: Platform.OS==='android'?10: 80, flex: 0.14, backgroundColor: null, marginHorizontal: 16 }}>
+            <View style={{ marginTop: Platform.OS === 'android' ? 10 : 80, flex: 0.14, backgroundColor: null, marginHorizontal: 16 }}>
                 <Text style={[TextCSS.Text20White600_IBM_Regular, { marginTop: 24, }]}>{'ระบุรถไฟฟ้าของคุณ'}</Text>
 
             </View>
@@ -164,8 +164,8 @@ const CarInfoemation = () => {
                                 >
 
                                 </TextInput>
-                                <TouchableOpacity style={{ justifyContent:'center', marginHorizontal: 10, maxWidth: 10 }}>
-                                 <IconAerrowDown/>
+                                <TouchableOpacity style={{ justifyContent: 'center', marginHorizontal: 10, maxWidth: 10 }}>
+                                    <IconAerrowDown />
                                 </TouchableOpacity>
 
 
@@ -189,8 +189,8 @@ const CarInfoemation = () => {
                                 >
 
                                 </TextInput>
-                                <TouchableOpacity style={{ justifyContent:'center', marginHorizontal: 10, maxWidth: 10 }}>
-                                 <IconAerrowDown/>
+                                <TouchableOpacity style={{ justifyContent: 'center', marginHorizontal: 10, maxWidth: 10 }}>
+                                    <IconAerrowDown />
                                 </TouchableOpacity>
 
 
@@ -206,7 +206,12 @@ const CarInfoemation = () => {
                 style={{ top: -25, marginHorizontal: 16, flex: 0.1, backgroundColor: null, justifyContent: "center", alignItems: "center" }}>
 
 
-                <TouchableOpacity style={[{ backgroundColor: null, flexDirection: 'row', marginBottom: 16 }]}>
+                <TouchableOpacity
+                    onPress={() => {
+
+                        navigation.navigate('HomeStackScreen');
+                    }}
+                    style={[{ backgroundColor: null, flexDirection: 'row', marginBottom: 16 }]}>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
 
                         // colors={['#2A2C31', '#2A2C31']}

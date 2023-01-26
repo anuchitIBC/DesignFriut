@@ -53,7 +53,7 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 const CELL_COUNT = 6;
 
-const OtpScreen = () => {
+const OtpScreen = ({ navigation }) => {
 
 
 
@@ -66,6 +66,7 @@ const OtpScreen = () => {
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
         value,
         setValue,
+
     });
 
 
@@ -81,6 +82,29 @@ const OtpScreen = () => {
     }, []);
 
 
+    const ChehckOTP = ({item }) => {
+
+        try {
+            setValue(item)
+            console.log(value)
+            setTimeout(() => {
+                console.log(value)
+                if(value.length >= 5){
+                    navigation.navigate('ConsentScreen');
+                    // alert('llll')
+    
+                }
+                
+            }, 1000);
+           
+
+        } catch (error) {
+
+        }
+
+    }
+
+
     return (
         <ImageBackground
             source={require('../../images/BgRegister.png')}
@@ -90,7 +114,7 @@ const OtpScreen = () => {
 
             <Headerss
                 badgeNumber="2"
-                navigation={''}
+                navigation={navigation}
                 backScreen={false}
                 ArrowColor={true}
                 title={
@@ -125,7 +149,12 @@ const OtpScreen = () => {
                                 {...props}
                                 // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
                                 value={value}
-                                onChangeText={setValue}
+                                onChangeText={(T) => {
+                                    // setValue(T)
+
+                                    ChehckOTP({item:T})
+
+                                }}
                                 cellCount={CELL_COUNT}
                                 rootStyle={styles.codeFieldRoot}
                                 keyboardType="numeric"
@@ -150,12 +179,12 @@ const OtpScreen = () => {
                             />
                         </View>
 
-                        <View style={{ marginHorizontal: 20, marginTop: 48,  flexDirection: 'row' }}>
-                            <TouchableOpacity style={{flex:1}}>
+                        <View style={{ marginHorizontal: 20, marginTop: 48, flexDirection: 'row' }}>
+                            <TouchableOpacity style={{ flex: 1 }}>
                                 <Text style={TextCSS.Text14Gray01_IBM_Regular}>{'ส่งรหัสยืนยันอีกครั้ง'}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity>
-                                <Text style={TextCSS.Text14White_IBM_Regular}>{timerCount}{ ' วิ '}</Text>
+                                <Text style={TextCSS.Text14White_IBM_Regular}>{timerCount}{' วิ '}</Text>
                             </TouchableOpacity>
 
                         </View>

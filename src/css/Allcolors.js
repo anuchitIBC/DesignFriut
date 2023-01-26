@@ -24,6 +24,7 @@ export const COLORS = {
     blue02:'#2084FC',
     Gray:'#404349',
     Gray01:'#C7C7CA',
+    Gray02:'#A6A6AB',
     black01:'#14151B',
     bgColor:'#181920',
     green:'#12C576'

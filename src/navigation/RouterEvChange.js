@@ -32,7 +32,10 @@ import Checklistproducts from '../pages/AppIntranet/Checklistproduct/Checklistpr
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import { COLORS } from '../css/Allcolors';
 import { fontSizes } from '../css/Allsizefont';
-import { IconChange24, IconCheckSucess } from '../Icon/Customs';
+import {
+  IconChange24, IconCheckSucess, IconDrive, IConMenuScan, Iconpupm,
+  IconStorytime, IconProfiles
+} from '../Icon/Customs';
 import { FONTFAMILY_ } from '../css/Allfontfamily';
 import LoginWithEmail from '../pages/01_Login/LoginWithEmailScreen';
 import MenuLoginSrceen from '../pages/01_Login/MenuLoginSrceen'
@@ -58,8 +61,9 @@ const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
-const Tabs = createBottomTabNavigator();
-import {createStackNavigator} from '@react-navigation/stack';
+
+import { createStackNavigator } from '@react-navigation/stack';
+import { TextCSS } from '../css/Font_Text';
 //  datamenu
 
 ///////// function ///////
@@ -69,13 +73,30 @@ import {createStackNavigator} from '@react-navigation/stack';
 const RouterEvChange = () => {
 
   const AppStack = createStackNavigator();
+  const Tabs = createBottomTabNavigator();
+
+  // function AppEVStackScreen() {
+  //   return(
+  //     <AppStack.Navigator initialRouteName="HomeStackScreen" headerMode="none">
+  //       <AppStack.Screen name='HomeStackScreen' component={TabHomeStackScreen}/>
+  //     </AppStack.Navigator>
+  //   )
+  // }
 
   function AppSkipscreen() {
     return (
       <AppStack.Navigator initialRouteName="SkinSrceen" headerMode="none">
         <AppStack.Screen name='SkinSrceen' component={SkinSrceen} />
         <AppStack.Screen name='MenuLoginSrceen' component={MenuLoginSrceen} />
-
+        <AppStack.Screen name='MenuRegisterScreen' component={MenuRegisterScreen} />
+        <AppStack.Screen name='OtpScreen' component={OtpScreen} />
+        <AppStack.Screen name='LoginPinScreen' component={LoginPinScreen} />
+        <AppStack.Screen name='ConsentScreen' component={ConsentScreen} />
+        <AppStack.Screen name='MenuFingerprintScanScreen' component={MenuFingerprintScanScreen} />
+        <AppStack.Screen name='CarInfoemation' component={CarInfoemation} />
+        <AppStack.Screen name='LoginWithEmail' component={LoginWithEmail} />
+        <AppStack.Screen name='MapsSrceen' component={MapsSrceen} />
+        <AppStack.Screen name='HomeStackScreen' component={TabHomeStackScreen} />
 
 
 
@@ -85,6 +106,211 @@ const RouterEvChange = () => {
 
   }
 
+  function TabHomeStackScreen(navigation) {
+    return (
+
+
+      <Tabs.Navigator
+        //  showLabel={true}
+
+        sceneContainerStyle={{}}
+        
+        screenOptions={{
+          tabBarLabelStyle: { fontSize: fontSizes.labelSize },
+          headerShown: false,
+          showLabel: true,
+          lazyLoad: true,
+        
+          tabBarStyle: {
+            
+            
+            // backgroundColor: 'transparent',
+            backgroundColor:'#181920',
+            borderTopColor: 'transparent',
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            shadowColor: COLORS.bglinearblue,
+            shadowOffset: {
+              width: 0,
+              // height: 2,
+              height: Platform.OS === 'ios' ? -3 : 10,
+            },
+            shadowOpacity: Platform.OS === 'ios' ? 0.06 : 0.25,
+
+            shadowRadius: 3.84,
+            
+
+
+
+           height:80,
+            // left: -6,
+            // right: -6,
+            bottom: -1,
+            // paddingHorizontal:20
+
+
+
+          },
+          tabBarPosition: 'bottom',
+
+          tabBarOptions: {
+            showIcon: true,
+            showLabel: false,
+            indicatorStyle: {
+              backgroundColor: 'red',
+              height: 22,
+              position: 'absolute',
+              top: '50%',
+              marginTop: -11
+            },
+            activeTintColor: 'white',
+            pressColor: 'white',
+            style: {
+              backgroundColor: 'red',
+              height: 44,
+              width
+            }
+          }
+
+        }}
+        backBehavior="none">
+        <Tabs.Screen
+          name="HomeStackScreen1"
+          component={HomeEV}
+          options={{
+            tabBarLabel: ({ tintColor, focused }) => (
+              <View style={{ marginBottom: 10 }}>
+                <Text
+                  style={TextCSS.Text12blue02500_IBM_Regular}>
+                  {'หน้าแรก'}
+                </Text>
+              </View>
+            ),
+            tabBarIcon: () => (
+              <View style={{ top: 5 }}>
+                <IconDrive />
+              </View>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="MapsSrceen"
+          component={MapsSrceen}
+          options={{
+            tabBarLabel: ({ tintColor, focused }) => (
+              <View style={{ marginBottom: 10 }}>
+                <Text
+                  style={TextCSS.Text12Gray02400_IBM_Regular}>
+                  {'สเตชั่น'}
+                </Text>
+              </View>
+            ),
+            tabBarIcon: () => (
+              <View style={{ top: 5 }}>
+                <Iconpupm />
+              </View>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="Homescreen1"
+          component={HomeEV}
+          options={{
+            tabBarLabel: () => <View />,
+            tabBarIcon: ({ tintColor, focused }) => (
+              <View
+                style={focused ? {
+                  justifyContent: 'center',
+                  marginTop: -40,
+                  borderRadius: 50,
+                  height: 80,
+                  width: 80,
+
+                  shadowColor: COLORS.bglinearblue,
+                  shadowOffset:
+                    Platform.OS === 'ios' ?
+                      {
+                        width: 0,
+                        height: 0,
+                      } : {
+                        width: 0,
+                        height: 1
+                      },
+                  shadowOpacity: 0.58,
+                  shadowRadius: 6.00,
+
+                  elevation: 24,
+                } : {
+                  justifyContent: 'center',
+                  marginTop: -40,
+                  borderRadius: 50,
+                  height: 80,
+                  width: 80,
+
+                  shadowColor: COLORS.bglinearblue,
+
+                }}>
+                <View
+                  style={{
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+
+                    borderRadius: 50,
+                    height: 65,
+                    width: 65,
+
+                  }}>
+                  <IConMenuScan />
+                </View>
+              </View>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="HomeStackScreen12"
+          component={HomeEV}
+          options={{
+            tabBarLabel: ({ tintColor, focused }) => (
+              <View style={{ marginBottom: 10 }}>
+                <Text
+                  style={TextCSS.Text12Gray02400_IBM_Regular}>
+                  {'ประวัติ'}
+                </Text>
+              </View>
+            ),
+            tabBarIcon: () => (
+              <View style={{ top: 5 }}>
+                <IconStorytime />
+              </View>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="HomeStackScreen13"
+          component={HomeEV}
+          options={{
+            tabBarLabel: ({ tintColor, focused }) => (
+              <View style={{ marginBottom: 10 }}>
+                <Text
+                  style={TextCSS.Text12Gray02400_IBM_Regular}>
+                  {'โปรไฟล์'}
+                </Text>
+              </View>
+            ),
+            tabBarIcon: () => (
+              <View style={{ top: 5 }}>
+                <IconProfiles />
+              </View>
+            ),
+          }}
+        />
+      </Tabs.Navigator>
+
+    )
+  }
+
+
+
 
 
 
@@ -93,10 +319,12 @@ const RouterEvChange = () => {
 
   return (
     <NavigationContainer
+    
 
       screenOptions={{ tabBarVisible: false }}>
-        {/* <MenuLoginSrceen/> */}
-      <AppSkipscreen />
+      {/* <MenuRegisterScreen/> */}
+      {/* <AppSkipscreen /> */}
+      <TabHomeStackScreen />
     </NavigationContainer>
   )
 };

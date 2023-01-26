@@ -45,7 +45,7 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 
 
-const LoginWithEmail = () => {
+const LoginWithEmail = ({ navigation }) => {
 
     const [spinner, setspinner] = useState(false)
 
@@ -63,14 +63,15 @@ const LoginWithEmail = () => {
             source={require('../../images/BgRegister.png')}
             resizeMode={'cover'}
             style={{
-                 height: '100%',
-                 
-             backgroundColor: '#181920' }}>
+                height: '100%',
+
+                backgroundColor: '#181920'
+            }}>
 
 
             <Headerss
                 badgeNumber="2"
-                navigation={''}
+                navigation={navigation}
                 backScreen={false}
                 ArrowColor={true}
                 title={
@@ -143,7 +144,15 @@ const LoginWithEmail = () => {
 
                 <View style={{ flex: 0.15, backgroundColor: null, marginHorizontal: 16 }}>
 
-                    <TouchableOpacity style={[{ backgroundColor: null, flexDirection: 'row' }]}>
+                    <TouchableOpacity
+
+                    onPress={()=>{
+                        
+                        navigation.navigate('LoginPinScreen');
+                    }}
+
+
+                        style={[{ backgroundColor: null, flexDirection: 'row' }]}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
 
 
