@@ -17,6 +17,7 @@ import {
     Dimensions,
     Animated,
     ImageBackground,
+    Platform,
 } from 'react-native';
 
 
@@ -68,7 +69,7 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 //   },
 // ];
 
-const SkinSrceen = () => {
+const SkinSrceen = ({navigation}) => {
 
     const [spinner, setspinner] = useState(false)
 
@@ -88,7 +89,7 @@ const SkinSrceen = () => {
             style={{ height: '100%', backgroundColor: '#181920' }}>
 
             <View style={{ flex: 1, backgroundColor: null }}>
-                <View style={{ marginTop: 108, marginHorizontal: 20 }}>
+                <View style={{ marginTop:Platform.OS==='android'?80: 108, marginHorizontal: 20 }}>
                     <Text style={TextCSS.Text24White_IBM_Regular}>{'ค้นหาสถานี'}</Text>
                     <Text style={[TextCSS.Text14White_IBM_Regular, { marginTop: 8 }]}>
                         {'จุดหมายปลายทางของคุณอยู่ใกล้แค่เอื้อม\nเปิดแอปและป้อนตำแหน่งที่คุณต้องการไป'}</Text>
@@ -104,7 +105,14 @@ const SkinSrceen = () => {
             </View>
 
             <View style={styles.ViewBtncss}>
-                <TouchableOpacity style={[{ backgroundColor: null, flexDirection: 'row' }]}>
+                <TouchableOpacity 
+
+                onPress={()=>{
+                    navigation.navigate('MenuLoginSrceen');
+                }}
+
+
+                style={[{ backgroundColor: null, flexDirection: 'row' }]}>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                         colors={['#0125E1', '#2084FC']}
                         style={{

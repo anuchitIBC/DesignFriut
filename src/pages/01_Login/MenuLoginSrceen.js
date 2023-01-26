@@ -17,6 +17,7 @@ import {
   Dimensions,
   Animated,
   ImageBackground,
+  Platform,
 } from 'react-native';
 
 
@@ -87,13 +88,18 @@ const MenuLoginSrceen = () => {
       resizeMode={'cover'}
       style={{ height: '100%', backgroundColor: '#181920' }}>
 
-      <View style={{ marginTop: 100, alignSelf: 'center' }}>
+      
+
+       
+      <View style={{ marginTop: Platform.OS==='android'?50:  100, 
+      alignSelf: 'center' }}>
         <IconChange24 />
       </View>
-      <View style={{ flex: 1, backgroundColor: null }}>
+      <View style={{ flex: 0.9, backgroundColor: null }}>
 
       </View>
-
+      
+      <ScrollView style={{flex:1}}>
       <View style={{ flex: 1, backgroundColor: null, marginHorizontal: 15 }}>
         <TouchableOpacity style={[styles.Btncss, { backgroundColor: '#F3F5F6' }]}>
           <View style={{ justifyContent: 'center', marginHorizontal: 10 }}>
@@ -133,13 +139,20 @@ const MenuLoginSrceen = () => {
 
         </LinearGradient>
 
-        <TouchableOpacity style={{ marginTop: 36, paddingVertical: 5 }}>
+        <TouchableOpacity style={{ marginTop: 6, paddingVertical: 5 }}>
           <Text style={[TextCSS.Text16blue02_IBM_Regular,{textAlign:'center'}]} >
             {'สมัครสมาชิก'}
           </Text>
         </TouchableOpacity>
 
       </View>
+
+      </ScrollView>
+
+   
+
+     
+
 
     </ImageBackground>
   );
